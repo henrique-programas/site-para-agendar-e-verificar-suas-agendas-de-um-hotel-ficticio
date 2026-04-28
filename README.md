@@ -1,59 +1,332 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎨 Calm Mind Resort & Spa - Frontend Only
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema de frontend **puro HTML/Blade + Tailwind CSS** para um resort luxuoso.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📦 Arquivos Entregues
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### **Views Blade (5 arquivos)**
+- `app.blade.php` - Layout principal com navegação e footer
+- `home.blade.php` - Homepage com hero, destaques e quartos
+- `rooms.blade.php` - Página de quartos com filtros
+- `about.blade.php` - Página sobre o resort
+- `contact.blade.php` - Página de contato com formulário
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### **Configuração (1 arquivo)**
+- `tailwind.config.js` - Tailwind CSS customizado
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## ⚡ Quick Start
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### **1. Setup Inicial**
 
-## Laravel Sponsors
+```bash
+# Crie um projeto Laravel novo
+composer create-project laravel/laravel calm-mind
+cd calm-mind
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# Instale Tailwind CSS
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
 
-### Premium Partners
+# Instale dependências
+npm install
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### **2. Configure Tailwind**
 
-## Contributing
+Copie o arquivo `tailwind.config.js` para a raiz do seu projeto.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### **3. Configure arquivo CSS**
 
-## Code of Conduct
+Crie `resources/css/app.css` com:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
 
-## Security Vulnerabilities
+### **4. Organize as Views**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+resources/views/
+├── layouts/
+│   └── app.blade.php          ← Copie aqui
+├── pages/
+│   ├── home.blade.php         ← Copie aqui
+│   ├── rooms.blade.php        ← Copie aqui
+│   ├── about.blade.php        ← Copie aqui
+│   └── contact.blade.php      ← Copie aqui
+```
 
-## License
+### **5. Crie as Rotas Básicas**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Em `routes/web.php`:
+
+```php
+<?php
+
+Route::get('/', function () {
+    return view('pages.home');
+})->name('home');
+
+Route::get('/quartos', function () {
+    return view('pages.rooms');
+})->name('rooms');
+
+Route::get('/sobre', function () {
+    return view('pages.about');
+})->name('about');
+
+Route::get('/contato', function () {
+    return view('pages.contact');
+})->name('contact');
+```
+
+### **6. Build CSS**
+
+```bash
+# Desenvolvimento (com watch)
+npm run dev
+
+# Produção
+npm run build
+```
+
+### **7. Inicie o servidor**
+
+```bash
+php artisan serve
+```
+
+Acesse em `http://localhost:8000` 🚀
+
+---
+
+## 🎨 Design
+
+### **Paleta de Cores**
+
+```css
+Primary:    #2d7a8a (Azul Teal)
+Secondary:  #3d2817 (Marrom)
+Accent:     #c4a47a (Bege/Ouro)
+BG Light:   #f5f1e8 (Bege Claro)
+BG White:   #fefbf7 (Branco Quente)
+Text Dark:  #2a2a2a
+Text Light: #6b6b6b
+```
+
+### **Fontes**
+
+```
+Display: Playfair Display (serif) - Titles
+Body:    Lato (sans-serif) - Content
+```
+
+As fontes já estão importadas via Google Fonts no `app.blade.php`
+
+---
+
+## 📱 Responsividade
+
+Todos os arquivos são **100% responsivos**:
+- ✅ Mobile (< 640px)
+- ✅ Tablet (640px - 1024px)
+- ✅ Desktop (> 1024px)
+
+---
+
+## 🔧 Customização
+
+### **Mudar Cores**
+
+Edite `tailwind.config.js`:
+
+```javascript
+colors: {
+  'primary': '#SEU_COR',
+  'secondary': '#SEU_COR',
+  // ... resto das cores
+}
+```
+
+### **Mudar Fontes**
+
+Edite `app.blade.php`:
+
+```html
+<link href="https://fonts.googleapis.com/css2?family=NOVA_FONTE&display=swap" rel="stylesheet">
+```
+
+E `tailwind.config.js`:
+
+```javascript
+fontFamily: {
+  'display': ['NOVA_FONTE', 'serif'],
+}
+```
+
+---
+
+## 📝 Estrutura das Páginas
+
+### **home.blade.php**
+- Hero section com imagem de fundo
+- Seção "Bem-vindo"
+- Cards de destaques
+- Quartos em destaque
+- Verificador de disponibilidade
+- CTA (Call-to-Action)
+
+### **rooms.blade.php**
+- Header
+- Filtros (tipo, datas, preço)
+- Grid de 6 tipos de quartos
+- Cards elegantes com preços
+- Paginação
+
+### **about.blade.php**
+- História do resort
+- Missão, Visão, Valores
+- Números (ocupação, prêmios)
+- Serviços oferecidos
+- Sustentabilidade
+- Equipe
+- Prêmios e reconhecimentos
+
+### **contact.blade.php**
+- Informações de contato
+- Formulário completo
+- FAQ com dropdown
+- Horários de funcionamento
+- Mapa (placeholder)
+
+---
+
+## 🚀 Componentes Reutilizáveis
+
+Já implementados nos arquivos:
+
+- `btn-primary` - Botão principal
+- `btn-secondary` - Botão secundário
+- `card-elegant` - Cards com hover
+- `line-accent` - Linha decorativa
+- `transition-elegant` - Transições suaves
+
+Use em qualquer lugar do HTML:
+
+```html
+<button class="btn-primary">Clique</button>
+<div class="card-elegant p-8">Conteúdo</div>
+```
+
+---
+
+## 📊 Tipos de Quartos
+
+| Tipo | Preço | Ícone |
+|------|-------|-------|
+| Quarto Deluxe | R$ 450/noite | 🏩 |
+| Suite Premium | R$ 750/noite | 🏨 |
+| Suíte Presidencial | R$ 1.200/noite | 👑 |
+| Suite Nupcial | R$ 950/noite | 💕 |
+| Suite Família | R$ 650/noite | 👨‍👩‍👧‍👦 |
+| Studio Deluxe | R$ 350/noite | 🎪 |
+
+---
+
+## 🎯 Links das Páginas
+
+- Home: `/`
+- Quartos: `/quartos`
+- Sobre: `/sobre`
+- Contato: `/contato`
+
+---
+
+## 💡 Dicas
+
+### **1. Adicionar Fontes Extras**
+
+Edite o `<head>` em `app.blade.php`:
+
+```html
+<link href="https://fonts.googleapis.com/css2?family=NOVA_FONTE&display=swap" rel="stylesheet">
+```
+
+### **2. Adicionar Ícones**
+
+Use emojis ou importe uma biblioteca:
+
+```html
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+```
+
+### **3. Adicionar Imagens**
+
+Coloque em `public/images/`:
+
+```html
+<img src="{{ asset('images/seu-arquivo.jpg') }}" alt="Descrição">
+```
+
+### **4. Customizar Espaçamento**
+
+Tailwind já tem classes prontas:
+- `p-4` - Padding
+- `m-4` - Margin
+- `gap-4` - Gap
+
+### **5. Adicionar Animações**
+
+As animações já estão definidas:
+- `animate-fade-in-up`
+- `animate-fade-in`
+- `animate-bounce`
+
+Use em qualquer elemento:
+
+```html
+<div class="animate-fade-in-up">Conteúdo</div>
+```
+
+---
+
+## 🔗 Links Úteis
+
+- [Tailwind CSS Docs](https://tailwindcss.com/docs)
+- [Blade Templating](https://laravel.com/docs/blade)
+- [Google Fonts](https://fonts.google.com)
+- [Unsplash (Imagens)](https://unsplash.com)
+
+---
+
+## ✅ Checklist de Implementação
+
+- [ ] Criar projeto Laravel
+- [ ] Instalar Tailwind CSS
+- [ ] Copiar `tailwind.config.js`
+- [ ] Copiar arquivos `.blade.php`
+- [ ] Criar rotas em `web.php`
+- [ ] Executar `npm run dev`
+- [ ] Iniciar servidor com `php artisan serve`
+- [ ] Testar em diferentes tamanhos de tela
+- [ ] Customizar cores conforme necessário
+- [ ] Adicionar imagens reais
+
+---
+
+## 🎉 Pronto para Usar!
+
+Todos os arquivos estão prontos para serem copiados e usados. Sem dependências de backend, sem controllers, sem models.
+
+**Basta copiar, colar e rodar!**
+
+---
+
+Desenvolvido com ❤️ para o Calm Mind Resort & Spa
