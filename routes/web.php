@@ -21,6 +21,10 @@ Route::get('/contato', function () {
     return view('pages.contact');
 })->name('contact');
 
+Route::get('/quartos/{id}', function ($id) {
+    return view('pages.room-detail', ['id' => $id]);
+})->name('room.detail');
+
 //////////////////////////////////////////////////
 
 Route::get('/dashboard', function () {

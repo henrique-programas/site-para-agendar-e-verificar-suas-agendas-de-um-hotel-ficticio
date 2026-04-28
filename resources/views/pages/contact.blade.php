@@ -1,371 +1,263 @@
 @extends('layouts.app')
-
-@section('title', 'Contato - Calm Mind Resort & Spa')
-
+@section('title', 'Contato — Calm Mind Resort & Spa')
 @section('content')
-<!-- Header -->
-<section class="pt-32 pb-20 bg-bg-light">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <div class="line-accent mx-auto mb-6"></div>
-            <h1 class="font-display text-5xl md:text-6xl text-secondary-dark mb-6">
-                Entre em Contato
-            </h1>
-            <p class="text-xl text-text-light max-w-2xl mx-auto">
-                Estamos aqui para ajudar com qualquer dúvida ou pedido especial
-            </p>
-        </div>
+
+<!-- ===== HERO ===== -->
+<section class="relative pt-44 pb-28">
+    <div class="absolute inset-0">
+        <img src="https://images.unsplash.com/photo-1586611292717-f828b167408c?w=1400&q=80"
+             alt="Contato" class="w-full h-full object-cover" style="filter: brightness(0.18);">
+        <div class="absolute inset-0" style="background: linear-gradient(to bottom, var(--ink) 0%, transparent 30%, var(--ink) 100%);"></div>
+    </div>
+    <div class="relative max-w-7xl mx-auto px-6 lg:px-12">
+        <span class="line-gold"></span>
+        <p class="text-xs uppercase tracking-[0.25em] mb-3" style="color: var(--gold);">Fale Conosco</p>
+        <h1 class="font-display text-6xl md:text-7xl" style="color: var(--cream); font-style: italic;">
+            Entre em<br>Contato
+        </h1>
+        <p class="mt-6 max-w-md text-sm leading-relaxed" style="color: var(--muted-2);">
+            Nossa equipe está disponível para tornar sua experiência inesquecível desde o primeiro contato.
+        </p>
     </div>
 </section>
 
-<!-- Informações de Contato -->
-<section class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <!-- Telefone -->
-            <div class="card-elegant p-8 text-center">
-                <div class="text-5xl mb-6">📞</div>
-                <h3 class="font-display text-2xl text-secondary-dark mb-4">Telefone</h3>
-                <p class="text-text-light mb-4">
-                    Ligue para reservas, informações e pedidos especiais
-                </p>
-                <a href="tel:+5511999999999" class="text-accent font-semibold hover:underline">
-                    +55 (11) 9999-9999
-                </a>
-                <p class="text-sm text-text-light mt-4">
-                    Segunda a domingo, 8h às 21h
-                </p>
-            </div>
+<!-- ===== INFO + FORMULÁRIO ===== -->
+<section style="background: var(--ink);" class="py-24">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-16">
 
-            <!-- Email -->
-            <div class="card-elegant p-8 text-center">
-                <div class="text-5xl mb-6">✉️</div>
-                <h3 class="font-display text-2xl text-secondary-dark mb-4">Email</h3>
-                <p class="text-text-light mb-4">
-                    Envie sua mensagem e responderemos em até 24h
-                </p>
-                <a href="mailto:contato@calmmind.com" class="text-accent font-semibold hover:underline">
-                    contato@calmmind.com
-                </a>
-                <p class="text-sm text-text-light mt-4">
-                    Para informações gerais
-                </p>
-            </div>
-
-            <!-- Localização -->
-            <div class="card-elegant p-8 text-center">
-                <div class="text-5xl mb-6">📍</div>
-                <h3 class="font-display text-2xl text-secondary-dark mb-4">Localização</h3>
-                <p class="text-text-light mb-4">
-                    Visite-nos pessoalmente
-                </p>
-                <p class="text-accent font-semibold">
-                    Avenida Brasileira, 1000<br>
-                    São Paulo, SP 01433-000<br>
-                    Brasil
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Mapa (mockup) -->
-<section class="py-16 bg-gray-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="rounded-lg overflow-hidden h-96 bg-gray-300 flex items-center justify-center">
-            <div class="text-center">
-                <p class="text-5xl mb-4">🗺️</p>
-                <p class="text-gray-700 font-semibold">Mapa interativo do resort</p>
-                <p class="text-gray-600 text-sm mt-2">Google Maps integrado (implementar com API)</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Formulário de Contato -->
-<section class="py-20 bg-bg-light">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-lg shadow-xl p-8 md:p-12">
-            <div class="mb-12">
-                <div class="line-accent mb-6"></div>
-                <h2 class="font-display text-3xl text-secondary-dark mb-2">
-                    Envie uma Mensagem
+            <!-- Informações (esquerda) -->
+            <div class="lg:col-span-2">
+                <span class="line-gold"></span>
+                <h2 class="font-display text-3xl mb-8" style="color: var(--cream); font-style: italic;">
+                    Como podemos ajudar?
                 </h2>
-                <p class="text-text-light">
-                    Preencha o formulário abaixo e nossa equipe entrará em contato em breve
-                </p>
+
+                <div class="space-y-8">
+                    @foreach([
+                        ['icon' => '📞', 'label' => 'Telefone',    'val' => '+55 (11) 9999-9999',     'sub' => 'Segunda a domingo, 8h – 21h'],
+                        ['icon' => '✉️', 'label' => 'Email',       'val' => 'contato@calmmind.com',   'sub' => 'Respondemos em até 24h'],
+                        ['icon' => '📍', 'label' => 'Endereço',    'val' => 'Av. Brasil, 1000',        'sub' => 'São Paulo — SP, Brasil'],
+                    ] as $c)
+                    <div class="flex gap-4">
+                        <div class="w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-sm text-xl"
+                             style="background: var(--ink-3); border: 1px solid rgba(201,168,76,0.12);">
+                            {{ $c['icon'] }}
+                        </div>
+                        <div>
+                            <p class="text-xs uppercase tracking-widest mb-1" style="color: var(--gold);">{{ $c['label'] }}</p>
+                            <p class="text-sm mb-1" style="color: var(--cream);">{{ $c['val'] }}</p>
+                            <p class="text-xs" style="color: var(--muted-2);">{{ $c['sub'] }}</p>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+
+                <!-- Divisor -->
+                <div class="divider-gold my-10"></div>
+
+                <!-- Horários -->
+                <h3 class="text-xs uppercase tracking-widest mb-6" style="color: var(--gold);">Horários</h3>
+                <div class="space-y-3 text-sm" style="color: var(--muted-2);">
+                    <div class="flex justify-between">
+                        <span>Recepção</span>
+                        <span style="color: var(--cream-dim);">24h / 7 dias</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Café da Manhã</span>
+                        <span style="color: var(--cream-dim);">6h – 11h</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Restaurante</span>
+                        <span style="color: var(--cream-dim);">12h – 23h</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Spa</span>
+                        <span style="color: var(--cream-dim);">8h – 22h</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Piscinas</span>
+                        <span style="color: var(--cream-dim);">7h – 20h</span>
+                    </div>
+                </div>
             </div>
 
-            <form action="/contact/send" method="POST" class="space-y-6">
-                @csrf
-
-                <!-- Nome e Email -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-secondary-dark mb-3">
-                            Nome Completo *
-                        </label>
-                        <input type="text" 
-                               name="name" 
-                               required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-elegant"
-                               placeholder="Seu nome">
+            <!-- Formulário (direita) -->
+            <div class="lg:col-span-3">
+                <div class="p-8 md:p-10 rounded-sm" style="background: var(--ink-3); border: 1px solid rgba(201,168,76,0.1);">
+                    @if(session('success'))
+                    <div class="mb-6 px-4 py-3 rounded-sm text-xs uppercase tracking-widest"
+                         style="background: rgba(46,125,138,0.15); color: var(--teal-light); border: 1px solid rgba(46,125,138,0.2);">
+                        ✓ Mensagem enviada com sucesso!
                     </div>
+                    @endif
 
-                    <div>
-                        <label class="block text-sm font-semibold text-secondary-dark mb-3">
-                            Email *
-                        </label>
-                        <input type="email" 
-                               name="email" 
-                               required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-elegant"
-                               placeholder="seu@email.com">
-                    </div>
+                    <h3 class="font-display text-2xl mb-8" style="color: var(--cream); font-style: italic;">
+                        Envie sua mensagem
+                    </h3>
+
+                    <form action="/contato/enviar" method="POST" class="space-y-5">
+                        @csrf
+
+                        <!-- Nome + Email -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            @foreach([['Nome Completo','text','name','Seu nome'],['Email','email','email','seu@email.com']] as $f)
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">
+                                    {{ $f[0] }} <span style="color: var(--gold);">*</span>
+                                </label>
+                                <input type="{{ $f[1] }}" name="{{ $f[2] }}" placeholder="{{ $f[3] }}" required
+                                       class="w-full px-4 py-3 text-sm rounded-sm focus:outline-none transition-colors duration-200"
+                                       style="background: var(--ink-2); border: 1px solid rgba(201,168,76,0.12); color: var(--cream);"
+                                       onfocus="this.style.borderColor='rgba(201,168,76,0.4)'"
+                                       onblur="this.style.borderColor='rgba(201,168,76,0.12)'">
+                                @error($f[2])<p class="text-xs mt-1" style="color: #e07070;">{{ $message }}</p>@enderror
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Telefone + Assunto -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Telefone</label>
+                                <input type="tel" name="phone" placeholder="(11) 99999-9999"
+                                       class="w-full px-4 py-3 text-sm rounded-sm focus:outline-none transition-colors duration-200"
+                                       style="background: var(--ink-2); border: 1px solid rgba(201,168,76,0.12); color: var(--cream);"
+                                       onfocus="this.style.borderColor='rgba(201,168,76,0.4)'"
+                                       onblur="this.style.borderColor='rgba(201,168,76,0.12)'">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">
+                                    Assunto <span style="color: var(--gold);">*</span>
+                                </label>
+                                <select name="subject" required
+                                        class="w-full px-4 py-3 text-sm rounded-sm focus:outline-none"
+                                        style="background: var(--ink-2); border: 1px solid rgba(201,168,76,0.12); color: var(--cream);">
+                                    <option value="">Selecione</option>
+                                    <option value="reserva">Reserva</option>
+                                    <option value="preco">Preços e Tarifas</option>
+                                    <option value="evento">Eventos & Corporativo</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Datas -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            @foreach([['Check-in','date','checkin'],['Check-out','date','checkout']] as $f)
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">{{ $f[0] }}</label>
+                                <input type="{{ $f[1] }}" name="{{ $f[2] }}"
+                                       class="w-full px-4 py-3 text-sm rounded-sm focus:outline-none transition-colors duration-200"
+                                       style="background: var(--ink-2); border: 1px solid rgba(201,168,76,0.12); color: var(--cream);"
+                                       onfocus="this.style.borderColor='rgba(201,168,76,0.4)'"
+                                       onblur="this.style.borderColor='rgba(201,168,76,0.12)'">
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Tipo de quarto -->
+                        <div>
+                            <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Tipo de Acomodação</label>
+                            <select name="room_type"
+                                    class="w-full px-4 py-3 text-sm rounded-sm focus:outline-none"
+                                    style="background: var(--ink-2); border: 1px solid rgba(201,168,76,0.12); color: var(--cream);">
+                                <option value="">Não definido</option>
+                                <option>Quarto Deluxe</option>
+                                <option>Suite Premium</option>
+                                <option>Suíte Presidencial</option>
+                                <option>Suite Nupcial</option>
+                                <option>Suite Família</option>
+                                <option>Studio Deluxe</option>
+                            </select>
+                        </div>
+
+                        <!-- Mensagem -->
+                        <div>
+                            <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">
+                                Mensagem <span style="color: var(--gold);">*</span>
+                            </label>
+                            <textarea name="message" rows="5" required
+                                      placeholder="Escreva sua mensagem..."
+                                      class="w-full px-4 py-3 text-sm rounded-sm focus:outline-none resize-none transition-colors duration-200"
+                                      style="background: var(--ink-2); border: 1px solid rgba(201,168,76,0.12); color: var(--cream);"
+                                      onfocus="this.style.borderColor='rgba(201,168,76,0.4)'"
+                                      onblur="this.style.borderColor='rgba(201,168,76,0.12)'"></textarea>
+                            @error('message')<p class="text-xs mt-1" style="color: #e07070;">{{ $message }}</p>@enderror
+                        </div>
+
+                        <!-- Newsletter -->
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" name="newsletter" id="newsletter"
+                                   class="w-4 h-4 rounded-sm"
+                                   style="accent-color: var(--gold);">
+                            <label for="newsletter" class="text-xs" style="color: var(--muted-2);">
+                                Quero receber ofertas e novidades exclusivas
+                            </label>
+                        </div>
+
+                        <!-- Botão -->
+                        <div class="pt-2">
+                            <button type="submit" class="btn-gold w-full justify-center">
+                                Enviar Mensagem
+                            </button>
+                            <p class="text-center text-xs mt-4" style="color: var(--muted);">
+                                * Respondemos em até 24 horas úteis
+                            </p>
+                        </div>
+                    </form>
                 </div>
-
-                <!-- Telefone e Assunto -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-secondary-dark mb-3">
-                            Telefone
-                        </label>
-                        <input type="tel" 
-                               name="phone"
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-elegant"
-                               placeholder="(11) 9999-9999">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-secondary-dark mb-3">
-                            Assunto *
-                        </label>
-                        <select name="subject" 
-                                required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-elegant">
-                            <option value="">Selecione um assunto</option>
-                            <option value="reserva">Dúvida sobre Reserva</option>
-                            <option value="preco">Informação de Preço</option>
-                            <option value="servico">Serviços Especiais</option>
-                            <option value="evento">Evento/Corporativo</option>
-                            <option value="reclamacao">Feedback/Reclamação</option>
-                            <option value="outro">Outro</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Datas -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-secondary-dark mb-3">
-                            Data de Entrada (se aplicável)
-                        </label>
-                        <input type="date" 
-                               name="check_in"
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-elegant">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-secondary-dark mb-3">
-                            Data de Saída (se aplicável)
-                        </label>
-                        <input type="date" 
-                               name="check_out"
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-elegant">
-                    </div>
-                </div>
-
-                <!-- Hóspedes -->
-                <div>
-                    <label class="block text-sm font-semibold text-secondary-dark mb-3">
-                        Número de Hóspedes
-                    </label>
-                    <select name="guests"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-elegant">
-                        <option value="">Selecione</option>
-                        <option value="1">1 Hóspede</option>
-                        <option value="2">2 Hóspedes</option>
-                        <option value="3">3 Hóspedes</option>
-                        <option value="4">4 Hóspedes</option>
-                        <option value="5+">5 ou mais</option>
-                    </select>
-                </div>
-
-                <!-- Tipo de Quarto -->
-                <div>
-                    <label class="block text-sm font-semibold text-secondary-dark mb-3">
-                        Tipo de Quarto de Interesse
-                    </label>
-                    <select name="room_type"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-elegant">
-                        <option value="">Selecione</option>
-                        <option value="deluxe">Quarto Deluxe</option>
-                        <option value="premium">Suite Premium</option>
-                        <option value="presidencial">Suíte Presidencial</option>
-                        <option value="nupcial">Suite Nupcial</option>
-                        <option value="familia">Suite Família</option>
-                        <option value="studio">Studio Deluxe</option>
-                    </select>
-                </div>
-
-                <!-- Mensagem -->
-                <div>
-                    <label class="block text-sm font-semibold text-secondary-dark mb-3">
-                        Mensagem *
-                    </label>
-                    <textarea name="message" 
-                              required
-                              rows="6"
-                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-elegant resize-none"
-                              placeholder="Digite sua mensagem aqui..."></textarea>
-                </div>
-
-                <!-- Checkbox -->
-                <div class="flex items-center">
-                    <input type="checkbox" 
-                           name="newsletter" 
-                           id="newsletter"
-                           class="w-4 h-4 text-primary rounded">
-                    <label for="newsletter" class="ml-3 text-sm text-text-light">
-                        Desejo receber ofertas e novidades por email
-                    </label>
-                </div>
-
-                <!-- Botões -->
-                <div class="border-t border-gray-200 pt-8 flex gap-4">
-                    <button type="submit" class="btn-primary flex-1">
-                        Enviar Mensagem
-                    </button>
-                    <button type="reset" class="btn-secondary flex-1">
-                        Limpar Formulário
-                    </button>
-                </div>
-
-                <p class="text-sm text-text-light text-center">
-                    * Campos obrigatórios. Responderemos em até 24 horas.
-                </p>
-            </form>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- FAQ -->
-<section class="py-20 bg-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <div class="line-accent mx-auto mb-6"></div>
-            <h2 class="font-display text-4xl text-secondary-dark mb-6">
+<!-- ===== FAQ ===== -->
+<section style="background: var(--ink-2); border-top: 1px solid rgba(201,168,76,0.1);" class="py-24">
+    <div class="max-w-3xl mx-auto px-6 lg:px-12">
+        <div class="text-center mb-14">
+            <span class="line-gold mx-auto" style="margin: 0 auto 1.5rem;"></span>
+            <h2 class="font-display text-4xl" style="color: var(--cream); font-style: italic;">
                 Perguntas Frequentes
             </h2>
         </div>
 
-        <div class="space-y-6">
+        <div class="space-y-3">
             @foreach([
-                [
-                    'question' => 'Qual é a política de cancelamento?',
-                    'answer' => 'As reservas podem ser canceladas até 7 dias antes da data de entrada com reembolso completo. Cancelamentos dentro de 7 dias estão sujeitos a uma taxa de 50% do valor da reserva.'
-                ],
-                [
-                    'question' => 'Quais são as formas de pagamento aceitas?',
-                    'answer' => 'Aceitamos cartão de crédito, débito, transferência bancária e Bitcoin. O pagamento pode ser feito no ato da reserva ou até 48 horas antes da chegada.'
-                ],
-                [
-                    'question' => 'Vocês oferecem transfer do aeroporto?',
-                    'answer' => 'Sim! Oferecemos serviço de transfer com taxas específicas. Consulte-nos durante a reserva para maiores detalhes.'
-                ],
-                [
-                    'question' => 'Há carga para animais de estimação?',
-                    'answer' => 'Aceitamos cães e gatos com taxa adicional de R$ 100 por noite. Existem quartos específicos para hóspedes com pets.'
-                ],
-                [
-                    'question' => 'O resort é acessível para deficientes?',
-                    'answer' => 'Sim, temos quartos adaptados com rampa de acesso, banheiros equipados e elevadores em todas as alas.'
-                ]
+                ['q' => 'Qual é a política de cancelamento?',          'a' => 'Cancelamentos até 7 dias antes recebem reembolso integral. Dentro desse prazo, aplica-se uma taxa de 50% do valor total da reserva.'],
+                ['q' => 'Quais formas de pagamento são aceitas?',       'a' => 'Aceitamos cartões de crédito e débito, transferência bancária e Pix. O pagamento pode ser feito na reserva ou até 48h antes da chegada.'],
+                ['q' => 'Vocês oferecem transfer do aeroporto?',        'a' => 'Sim! Oferecemos serviço de transfer com agendamento prévio. Consulte disponibilidade e valores ao realizar sua reserva.'],
+                ['q' => 'Aceitam animais de estimação?',                'a' => 'Aceitamos cães e gatos de pequeno porte com taxa adicional. Temos quartos especialmente preparados para hóspedes com pets.'],
+                ['q' => 'O resort possui acessibilidade?',              'a' => 'Sim. Todos os ambientes contam com rampas, elevadores adaptados e quartos equipados para hóspedes com mobilidade reduzida.'],
             ] as $faq)
-                <details class="border border-gray-200 rounded-lg p-6 cursor-pointer group">
-                    <summary class="flex items-center justify-between font-semibold text-secondary-dark">
-                        {{ $faq['question'] }}
-                        <span class="text-2xl group-open:rotate-180 transition-transform">+</span>
-                    </summary>
-                    <p class="text-text-light mt-4 leading-relaxed">
-                        {{ $faq['answer'] }}
-                    </p>
-                </details>
+            <details class="rounded-sm group cursor-pointer"
+                     style="background: var(--ink-3); border: 1px solid rgba(201,168,76,0.1);">
+                <summary class="flex items-center justify-between px-6 py-5 text-sm font-medium" style="color: var(--cream); list-style: none;">
+                    <span>{{ $faq['q'] }}</span>
+                    <span class="ml-4 flex-shrink-0 text-lg transition-transform duration-300 group-open:rotate-45"
+                          style="color: var(--gold);">+</span>
+                </summary>
+                <div class="px-6 pb-5 text-sm leading-relaxed" style="color: var(--muted-2);">
+                    {{ $faq['a'] }}
+                </div>
+            </details>
             @endforeach
         </div>
     </div>
 </section>
 
-<!-- Horário de Funcionamento -->
-<section class="py-20 bg-bg-light">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <div class="line-accent mx-auto mb-6"></div>
-            <h2 class="font-display text-4xl text-secondary-dark mb-6">
-                Horário de Funcionamento
-            </h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-            <!-- Recepção -->
-            <div class="card-elegant p-8">
-                <h3 class="font-display text-2xl text-secondary-dark mb-4">Recepção 24h</h3>
-                <p class="text-text-light">
-                    Nossa recepção está disponível 24 horas por dia, 7 dias por semana para ajudá-lo com qualquer necessidade.
-                </p>
-            </div>
-
-            <!-- Restaurantes -->
-            <div class="card-elegant p-8">
-                <h3 class="font-display text-2xl text-secondary-dark mb-4">Restaurantes</h3>
-                <ul class="text-text-light space-y-2">
-                    <li><strong>Café da Manhã:</strong> 6h às 11h</li>
-                    <li><strong>Almoço:</strong> 12h às 15h</li>
-                    <li><strong>Jantar:</strong> 18h às 23h</li>
-                    <li><strong>Room Service:</strong> 24h</li>
-                </ul>
-            </div>
-
-            <!-- Spa -->
-            <div class="card-elegant p-8">
-                <h3 class="font-display text-2xl text-secondary-dark mb-4">Spa</h3>
-                <ul class="text-text-light space-y-2">
-                    <li><strong>Segunda a Sexta:</strong> 8h às 22h</li>
-                    <li><strong>Sábado e Domingo:</strong> 9h às 21h</li>
-                    <li>Agendamento recomendado</li>
-                </ul>
-            </div>
-
-            <!-- Piscina -->
-            <div class="card-elegant p-8">
-                <h3 class="font-display text-2xl text-secondary-dark mb-4">Piscinas</h3>
-                <ul class="text-text-light space-y-2">
-                    <li><strong>Todos os dias:</strong> 7h às 20h</li>
-                    <li>Bar à beira da piscina: 10h às 19h</li>
-                    <li>Guarda-vidas durante todo horário</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- CTA Final -->
-<section class="py-20 bg-secondary-dark text-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="font-display text-4xl md:text-5xl mb-6">
+<!-- ===== CTA FINAL ===== -->
+<section style="background: var(--ink); border-top: 1px solid rgba(201,168,76,0.1);" class="py-20">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+        <h2 class="font-display text-4xl mb-4" style="color: var(--cream); font-style: italic;">
             Ainda tem dúvidas?
         </h2>
-        <p class="text-xl text-gray-300 mb-10">
-            Ligue para nosso call center ou use o chat ao vivo
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="tel:+5511999999999" class="btn-primary bg-white text-secondary-dark hover:bg-gray-100">
-                📞 Ligar Agora
-            </a>
-            <button class="btn-secondary border-white text-white hover:bg-white hover:text-secondary-dark">
-                💬 Chat ao Vivo
-            </button>
+        <p class="text-sm mb-8" style="color: var(--muted-2);">Ligue agora ou use nosso chat em tempo real.</p>
+        <div class="flex flex-wrap gap-4 justify-center">
+            <a href="tel:+5511999999999" class="btn-gold">📞 Ligar Agora</a>
+            <button class="btn-outline">💬 Chat ao Vivo</button>
         </div>
     </div>
 </section>
+
 @endsection

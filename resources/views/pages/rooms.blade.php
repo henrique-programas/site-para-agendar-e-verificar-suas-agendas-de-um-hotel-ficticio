@@ -1,433 +1,160 @@
 @extends('layouts.app')
-
-@section('title', 'Nossos Quartos - Calm Mind Resort & Spa')
-
+@section('title', 'Acomodações — Calm Mind Resort & Spa')
 @section('content')
-<!-- Header -->
-<section class="pt-32 pb-20 bg-bg-light">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <div class="line-accent mx-auto mb-6"></div>
-            <h1 class="font-display text-5xl md:text-6xl text-secondary-dark mb-6">
-                Nossos Quartos
-            </h1>
-            <p class="text-xl text-text-light max-w-2xl mx-auto">
-                Acomodações sofisticadas com vistas deslumbrantes e conforto de classe mundial
-            </p>
-        </div>
+
+<!-- ===== HERO ===== -->
+<section class="relative pt-40 pb-28 overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="https://images.unsplash.com/photo-1596928519198-83e0b5c8d900?w=1400&q=80"
+             alt="Quartos" class="w-full h-full object-cover" style="filter: brightness(0.22);">
+        <div class="absolute inset-0" style="background: linear-gradient(to bottom, var(--ink) 0%, transparent 30%, var(--ink) 100%);"></div>
+    </div>
+    <div class="relative max-w-7xl mx-auto px-6 lg:px-12">
+        <span class="line-gold"></span>
+        <p class="text-xs uppercase tracking-[0.25em] mb-3" style="color: var(--gold);">Acomodações</p>
+        <h1 class="font-display text-6xl md:text-7xl" style="color: var(--cream); font-style: italic;">
+            Quartos & Suítes
+        </h1>
+        <p class="mt-6 max-w-xl text-sm leading-relaxed" style="color: var(--muted-2);">
+            Cada acomodação é um mundo próprio — pensada para oferecer conforto excepcional, privacidade e detalhes que surpreendem a cada descoberta.
+        </p>
     </div>
 </section>
 
-<!-- Filtros -->
-<section class="py-12 bg-white border-b border-gray-200 sticky top-20 z-40">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <form class="grid grid-cols-1 md:grid-cols-5 gap-4">
+<!-- ===== FILTROS ===== -->
+<div style="background: var(--ink-2); border-top: 1px solid rgba(201,168,76,0.08); border-bottom: 1px solid rgba(201,168,76,0.08); position: sticky; top: 80px; z-index: 40;">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-5">
+        <form class="flex flex-wrap items-end gap-5">
+            @foreach([
+                ['label' => 'Tipo',       'name' => 'type',     'opts' => ['Todos','Deluxe','Premium','Presidencial','Nupcial','Família','Studio']],
+                ['label' => 'Check-in',   'name' => 'checkin',  'type' => 'date'],
+                ['label' => 'Check-out',  'name' => 'checkout', 'type' => 'date'],
+            ] as $f)
             <div>
-                <label class="block text-sm font-semibold text-secondary-dark mb-2">Tipo de Quarto</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm">
-                    <option>Todos</option>
-                    <option>Deluxe</option>
-                    <option>Premium</option>
-                    <option>Presidencial</option>
-                    <option>Suite Nupcial</option>
-                </select>
+                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">{{ $f['label'] }}</label>
+                @if(isset($f['opts']))
+                    <select name="{{ $f['name'] }}" class="px-4 py-2 text-xs rounded-sm focus:outline-none"
+                            style="background: var(--ink-3); border: 1px solid rgba(201,168,76,0.12); color: var(--cream); min-width: 130px;">
+                        @foreach($f['opts'] as $o)<option>{{ $o }}</option>@endforeach
+                    </select>
+                @else
+                    <input type="{{ $f['type'] }}" name="{{ $f['name'] }}"
+                           class="px-4 py-2 text-xs rounded-sm focus:outline-none"
+                           style="background: var(--ink-3); border: 1px solid rgba(201,168,76,0.12); color: var(--cream);">
+                @endif
             </div>
-            
+            @endforeach
             <div>
-                <label class="block text-sm font-semibold text-secondary-dark mb-2">Entrada</label>
-                <input type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm">
-            </div>
-            
-            <div>
-                <label class="block text-sm font-semibold text-secondary-dark mb-2">Saída</label>
-                <input type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm">
-            </div>
-            
-            <div>
-                <label class="block text-sm font-semibold text-secondary-dark mb-2">Faixa de Preço</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm">
-                    <option>Qualquer preço</option>
+                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Preço</label>
+                <select name="price" class="px-4 py-2 text-xs rounded-sm focus:outline-none"
+                        style="background: var(--ink-3); border: 1px solid rgba(201,168,76,0.12); color: var(--cream);">
+                    <option>Qualquer</option>
                     <option>Até R$ 500</option>
-                    <option>R$ 500 - R$ 1000</option>
-                    <option>Acima de R$ 1000</option>
+                    <option>R$ 500 – R$ 1.000</option>
+                    <option>Acima R$ 1.000</option>
                 </select>
             </div>
-            
-            <div class="flex items-end">
-                <button type="submit" class="btn-primary w-full text-sm">
-                    Filtrar
-                </button>
-            </div>
+            <button type="submit" class="btn-gold py-2">Filtrar</button>
         </form>
     </div>
-</section>
+</div>
 
-<!-- Quartos Grid -->
-<section class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Grid de Quartos -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            <!-- Quarto 1: Deluxe -->
-            <div class="card-elegant group overflow-hidden">
-                <div class="relative h-80 overflow-hidden bg-gray-300">
-                    <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80" 
-                         alt="Quarto Deluxe" 
-                         class="w-full h-full object-cover group-hover:scale-110 transition-elegant duration-700">
+<!-- ===== GRID DE QUARTOS ===== -->
+<section style="background: var(--ink);" class="py-24">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach([
+                ['title' => 'Quarto Deluxe',     'price' => 'R$ 450', 'tag' => 'Clássico',    'size' => '35m²', 'guests' => '2', 'rating' => '4.5', 'img' => 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80',     'items' => ['Cama King','Smart TV 55"','Banheiro mármore','Varanda']],
+                ['title' => 'Suite Premium',     'price' => 'R$ 750', 'tag' => 'Mais Pedido', 'size' => '65m²', 'guests' => '2', 'rating' => '4.9', 'img' => 'https://images.unsplash.com/photo-1578683078519-94f3b6c49f15?w=600&q=80',     'items' => ['Sala separada','Jacuzzi','Vista resort','Bar privativo']],
+                ['title' => 'Suíte Presidencial','price' => 'R$ 1.200','tag' => 'Exclusivo',  'size' => '150m²','guests' => '4', 'rating' => '5.0', 'img' => 'https://images.unsplash.com/photo-1591088398332-8c716432dd4d?w=600&q=80',     'items' => ['2 Quartos','Cozinha equipada','Varanda 80m²','Home theater']],
+                ['title' => 'Suite Nupcial',     'price' => 'R$ 950', 'tag' => 'Romântica',   'size' => '90m²', 'guests' => '2', 'rating' => '5.0', 'img' => 'https://images.unsplash.com/photo-1569495285382-649f3061fb6f?w=600&q=80',     'items' => ['Banhão privado','Iluminação especial','Mini adega','Flores diárias']],
+                ['title' => 'Suite Família',     'price' => 'R$ 650', 'tag' => 'Familiar',    'size' => '100m²','guests' => '4', 'rating' => '4.6', 'img' => 'https://images.unsplash.com/photo-1596928519198-83e0b5c8d900?w=600&q=80',     'items' => ['2 Quartos','Área de lazer','Kitchenette','Baby-sitting']],
+                ['title' => 'Studio Deluxe',     'price' => 'R$ 350', 'tag' => 'Econômico',   'size' => '28m²', 'guests' => '2', 'rating' => '4.4', 'img' => 'https://images.unsplash.com/photo-1512694712202-b4f91e6ca4eb?w=600&q=80',     'items' => ['Cama Queen','WiFi 1Gbps','Toiletries premium','Vista jardim']],
+            ] as $room)
+            <div class="card-dark group overflow-hidden">
+                <!-- Imagem -->
+                <div class="relative h-64 overflow-hidden">
+                    <img src="{{ $room['img'] }}" alt="{{ $room['title'] }}"
+                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                         style="filter: brightness(0.8);">
+                    <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(10,8,6,0.9) 0%, transparent 55%);"></div>
+
+                    <!-- Tag -->
                     <div class="absolute top-4 left-4">
-                        <span class="bg-accent text-secondary-dark px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide">
-                            Deluxe
+                        <span class="text-xs uppercase tracking-widest px-3 py-1"
+                              style="background: rgba(10,8,6,0.7); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); backdrop-filter: blur(6px); border-radius: 2px;">
+                            {{ $room['tag'] }}
                         </span>
                     </div>
-                </div>
-                <div class="p-8">
-                    <h3 class="font-display text-2xl text-secondary-dark mb-2">Quarto Deluxe</h3>
-                    <div class="flex items-center mb-4 text-sm text-accent">
-                        <span>⭐⭐⭐⭐</span>
-                        <span class="text-text-light ml-2">(4.5/5)</span>
-                    </div>
-                    
-                    <p class="text-text-light mb-6 text-sm leading-relaxed">
-                        Quartos espaçosos com vistas para o jardim, cama king-size premium e banheiro com acabamentos luxuosos.
-                    </p>
-                    
-                    <!-- Amenidades -->
-                    <div class="mb-6 space-y-2 text-sm text-text-light">
-                        <div class="flex items-center">
-                            <span class="mr-3">🛏️</span>
-                            <span>Cama King ou Twin</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">📺</span>
-                            <span>Smart TV 55"</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">🌡️</span>
-                            <span>Ar condicionado inteligente</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">📶</span>
-                            <span>WiFi de alta velocidade</span>
-                        </div>
-                    </div>
-                    
-                    <div class="border-t border-gray-200 pt-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="font-display text-2xl text-secondary-dark font-bold">R$ 450</span>
-                            <span class="text-sm text-text-light">/noite</span>
-                        </div>
-                        <button class="btn-secondary w-full text-sm">
-                            Ver Detalhes
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Quarto 2: Premium -->
-            <div class="card-elegant group overflow-hidden md:col-span-1">
-                <div class="relative h-80 overflow-hidden bg-gray-300">
-                    <img src="https://images.unsplash.com/photo-1578683078519-94f3b6c49f15?w=600&q=80" 
-                         alt="Suite Premium" 
-                         class="w-full h-full object-cover group-hover:scale-110 transition-elegant duration-700">
-                    <div class="absolute top-4 left-4 flex gap-2">
-                        <span class="bg-primary text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide">
-                            Premium
-                        </span>
-                        <span class="bg-accent text-secondary-dark px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide">
-                            Popular
-                        </span>
+                    <!-- Tamanho e hóspedes -->
+                    <div class="absolute top-4 right-4 flex gap-2 text-xs" style="color: var(--cream-dim);">
+                        <span style="background: rgba(10,8,6,0.6); padding: 4px 8px; backdrop-filter: blur(4px); border-radius: 2px;">{{ $room['size'] }}</span>
                     </div>
-                </div>
-                <div class="p-8">
-                    <h3 class="font-display text-2xl text-secondary-dark mb-2">Suite Premium</h3>
-                    <div class="flex items-center mb-4 text-sm text-accent">
-                        <span>⭐⭐⭐⭐⭐</span>
-                        <span class="text-text-light ml-2">(4.9/5)</span>
-                    </div>
-                    
-                    <p class="text-text-light mb-6 text-sm leading-relaxed">
-                        Suíte espaçosa com sala de estar, cama king-size, banheiro de mármore e varanda com vista para o resort.
-                    </p>
-                    
-                    <!-- Amenidades -->
-                    <div class="mb-6 space-y-2 text-sm text-text-light">
-                        <div class="flex items-center">
-                            <span class="mr-3">🛏️</span>
-                            <span>Cama King-size California</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">🛋️</span>
-                            <span>Sala de estar separada</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">🚿</span>
-                            <span>Banheiro luxuoso c/ jacuzzi</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">🏞️</span>
-                            <span>Varanda privativa espaçosa</span>
-                        </div>
-                    </div>
-                    
-                    <div class="border-t border-gray-200 pt-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="font-display text-2xl text-secondary-dark font-bold">R$ 750</span>
-                            <span class="text-sm text-text-light">/noite</span>
-                        </div>
-                        <button class="btn-secondary w-full text-sm">
-                            Ver Detalhes
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Quarto 3: Presidencial -->
-            <div class="card-elegant group overflow-hidden lg:col-span-1">
-                <div class="relative h-80 overflow-hidden bg-gray-300">
-                    <img src="https://images.unsplash.com/photo-1591088398332-8c716432dd4d?w=600&q=80" 
-                         alt="Suíte Presidencial" 
-                         class="w-full h-full object-cover group-hover:scale-110 transition-elegant duration-700">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-secondary-dark text-accent px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide">
-                            Luxo
-                        </span>
+                    <!-- Rating -->
+                    <div class="absolute bottom-4 right-4 flex items-center gap-1 text-xs"
+                         style="color: var(--gold);">
+                        <span>★</span>
+                        <span style="color: var(--cream-dim);">{{ $room['rating'] }}</span>
                     </div>
                 </div>
-                <div class="p-8">
-                    <h3 class="font-display text-2xl text-secondary-dark mb-2">Suíte Presidencial</h3>
-                    <div class="flex items-center mb-4 text-sm text-accent">
-                        <span>⭐⭐⭐⭐⭐</span>
-                        <span class="text-text-light ml-2">(5/5)</span>
-                    </div>
-                    
-                    <p class="text-text-light mb-6 text-sm leading-relaxed">
-                        Nossa suíte mais luxuosa com 150m², dois quartos, sala de estar, cozinha e vista panorâmica completa.
-                    </p>
-                    
-                    <!-- Amenidades -->
-                    <div class="mb-6 space-y-2 text-sm text-text-light">
-                        <div class="flex items-center">
-                            <span class="mr-3">🏠</span>
-                            <span>2 Quartos + Sala estar</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">🍽️</span>
-                            <span>Cozinha completa</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">🌅</span>
-                            <span>Varanda de 80m²</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">🎵</span>
-                            <span>Som surround & home theater</span>
-                        </div>
-                    </div>
-                    
-                    <div class="border-t border-gray-200 pt-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="font-display text-2xl text-secondary-dark font-bold">R$ 1.200</span>
-                            <span class="text-sm text-text-light">/noite</span>
-                        </div>
-                        <button class="btn-secondary w-full text-sm">
-                            Ver Detalhes
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Quarto 4: Suite Nupcial -->
-            <div class="card-elegant group overflow-hidden">
-                <div class="relative h-80 overflow-hidden bg-gray-300">
-                    <img src="https://images.unsplash.com/photo-1569495285382-649f3061fb6f?w=600&q=80" 
-                         alt="Suite Nupcial" 
-                         class="w-full h-full object-cover group-hover:scale-110 transition-elegant duration-700">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-pink-400 text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide">
-                            Romântica
-                        </span>
-                    </div>
-                </div>
-                <div class="p-8">
-                    <h3 class="font-display text-2xl text-secondary-dark mb-2">Suite Nupcial</h3>
-                    <div class="flex items-center mb-4 text-sm text-accent">
-                        <span>⭐⭐⭐⭐⭐</span>
-                        <span class="text-text-light ml-2">(5/5)</span>
-                    </div>
-                    
-                    <p class="text-text-light mb-6 text-sm leading-relaxed">
-                        Suíte romântica perfeita para casamentos e lua de mel com banhão privado e decoração especial.
-                    </p>
-                    
-                    <!-- Amenidades -->
-                    <div class="mb-6 space-y-2 text-sm text-text-light">
-                        <div class="flex items-center">
-                            <span class="mr-3">🛁</span>
-                            <span>Banhão privado espaçoso</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">🕯️</span>
-                            <span>Iluminação romântica</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">🍷</span>
-                            <span>Mini adega de vinhos</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">💐</span>
-                            <span>Decoração floral diária</span>
-                        </div>
-                    </div>
-                    
-                    <div class="border-t border-gray-200 pt-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="font-display text-2xl text-secondary-dark font-bold">R$ 950</span>
-                            <span class="text-sm text-text-light">/noite</span>
-                        </div>
-                        <button class="btn-secondary w-full text-sm">
-                            Ver Detalhes
-                        </button>
-                    </div>
-                </div>
-            </div>
+                <!-- Conteúdo -->
+                <div class="p-6">
+                    <h3 class="font-display text-2xl mb-4" style="color: var(--cream); font-style: italic;">{{ $room['title'] }}</h3>
 
-            <!-- Quarto 5: Familia -->
-            <div class="card-elegant group overflow-hidden">
-                <div class="relative h-80 overflow-hidden bg-gray-300">
-                    <img src="https://images.unsplash.com/photo-1596928519198-83e0b5c8d900?w=600&q=80" 
-                         alt="Suite Familia" 
-                         class="w-full h-full object-cover group-hover:scale-110 transition-elegant duration-700">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-blue-400 text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide">
-                            Familia
-                        </span>
-                    </div>
-                </div>
-                <div class="p-8">
-                    <h3 class="font-display text-2xl text-secondary-dark mb-2">Suite Família</h3>
-                    <div class="flex items-center mb-4 text-sm text-accent">
-                        <span>⭐⭐⭐⭐</span>
-                        <span class="text-text-light ml-2">(4.6/5)</span>
-                    </div>
-                    
-                    <p class="text-text-light mb-6 text-sm leading-relaxed">
-                        Espaçosa com dois quartos, sala de estar grande, perfeita para famílias e grupos de amigos.
-                    </p>
-                    
                     <!-- Amenidades -->
-                    <div class="mb-6 space-y-2 text-sm text-text-light">
-                        <div class="flex items-center">
-                            <span class="mr-3">👨‍👩‍👧‍👦</span>
-                            <span>2-4 hóspedes confortáveis</span>
+                    <div class="grid grid-cols-2 gap-y-2 mb-6">
+                        @foreach($room['items'] as $item)
+                        <div class="flex items-center gap-2 text-xs" style="color: var(--muted-2);">
+                            <span style="color: var(--gold-dim);">—</span>
+                            {{ $item }}
                         </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">🎮</span>
-                            <span>Área de lazer com jogos</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">🧸</span>
-                            <span>Serviço baby-sitting</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">🍽️</span>
-                            <span>Kitchenette equipada</span>
-                        </div>
+                        @endforeach
                     </div>
-                    
-                    <div class="border-t border-gray-200 pt-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="font-display text-2xl text-secondary-dark font-bold">R$ 650</span>
-                            <span class="text-sm text-text-light">/noite</span>
-                        </div>
-                        <button class="btn-secondary w-full text-sm">
-                            Ver Detalhes
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Quarto 6: Studio -->
-            <div class="card-elegant group overflow-hidden">
-                <div class="relative h-80 overflow-hidden bg-gray-300">
-                    <img src="https://images.unsplash.com/photo-1512694712202-b4f91e6ca4eb?w=600&q=80" 
-                         alt="Studio Deluxe" 
-                         class="w-full h-full object-cover group-hover:scale-110 transition-elegant duration-700">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-green-400 text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide">
-                            Econômico
-                        </span>
-                    </div>
-                </div>
-                <div class="p-8">
-                    <h3 class="font-display text-2xl text-secondary-dark mb-2">Studio Deluxe</h3>
-                    <div class="flex items-center mb-4 text-sm text-accent">
-                        <span>⭐⭐⭐⭐</span>
-                        <span class="text-text-light ml-2">(4.4/5)</span>
-                    </div>
-                    
-                    <p class="text-text-light mb-6 text-sm leading-relaxed">
-                        Compacto e elegante com o essencial para viajantes, cama confortável e banheiro completo.
-                    </p>
-                    
-                    <!-- Amenidades -->
-                    <div class="mb-6 space-y-2 text-sm text-text-light">
-                        <div class="flex items-center">
-                            <span class="mr-3">🚶</span>
-                            <span>Ideal para mochileiros</span>
+                    <!-- Preço + Botão -->
+                    <div class="flex items-center justify-between pt-5" style="border-top: 1px solid rgba(201,168,76,0.1);">
+                        <div>
+                            <span class="font-display text-2xl" style="color: var(--gold); font-style: italic;">{{ $room['price'] }}</span>
+                            <span class="text-xs ml-1" style="color: var(--muted);">/ noite</span>
                         </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">💰</span>
-                            <span>Melhor relação custo/benefício</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">🧴</span>
-                            <span>Toiletries premium inclusos</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="mr-3">📍</span>
-                            <span>Localização central</span>
-                        </div>
-                    </div>
-                    
-                    <div class="border-t border-gray-200 pt-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="font-display text-2xl text-secondary-dark font-bold">R$ 350</span>
-                            <span class="text-sm text-text-light">/noite</span>
-                        </div>
-                        <button class="btn-secondary w-full text-sm">
-                            Ver Detalhes
-                        </button>
+                        <a href="#" class="btn-gold py-2 px-5 text-xs">Ver Detalhes</a>
                     </div>
                 </div>
             </div>
+            @endforeach
         </div>
 
         <!-- Paginação -->
-        <div class="flex justify-center items-center gap-4 mt-16">
-            <button class="px-4 py-2 rounded-lg border border-gray-300 text-text-dark hover:bg-bg-light transition-elegant">← Anterior</button>
-            
-            <div class="flex gap-2">
-                <button class="w-10 h-10 rounded-lg bg-secondary-dark text-white font-bold">1</button>
-                <button class="w-10 h-10 rounded-lg border border-gray-300 text-text-dark hover:bg-bg-light transition-elegant">2</button>
-                <button class="w-10 h-10 rounded-lg border border-gray-300 text-text-dark hover:bg-bg-light transition-elegant">3</button>
-            </div>
-            
-            <button class="px-4 py-2 rounded-lg border border-gray-300 text-text-dark hover:bg-bg-light transition-elegant">Próxima →</button>
+        <div class="flex items-center justify-center gap-2 mt-16">
+            <button class="w-10 h-10 flex items-center justify-center text-xs rounded-sm transition-all duration-200"
+                    style="background: var(--ink-3); color: var(--muted-2); border: 1px solid rgba(201,168,76,0.1);">←</button>
+            @foreach([1,2,3] as $p)
+            <button class="w-10 h-10 flex items-center justify-center text-xs rounded-sm transition-all duration-200"
+                    style="{{ $p === 1 ? 'background: var(--gold); color: var(--ink);' : 'background: var(--ink-3); color: var(--muted-2); border: 1px solid rgba(201,168,76,0.1);' }}">
+                {{ $p }}
+            </button>
+            @endforeach
+            <button class="w-10 h-10 flex items-center justify-center text-xs rounded-sm transition-all duration-200"
+                    style="background: var(--ink-3); color: var(--muted-2); border: 1px solid rgba(201,168,76,0.1);">→</button>
         </div>
     </div>
 </section>
 
-<!-- CTA Final -->
-<section class="py-20 bg-secondary-dark text-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="font-display text-4xl md:text-5xl mb-6">
-            Não encontrou o quarto ideal?
+<!-- ===== CTA ===== -->
+<section class="py-20" style="background: var(--ink-2); border-top: 1px solid rgba(201,168,76,0.1);">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+        <p class="text-xs uppercase tracking-[0.25em] mb-4" style="color: var(--gold);">Atendimento Exclusivo</p>
+        <h2 class="font-display text-4xl mb-4" style="color: var(--cream); font-style: italic;">
+            Não encontrou o ideal?
         </h2>
-        <p class="text-lg text-gray-300 mb-8">
-            Fale com nossos consultores para opções personalizadas
+        <p class="text-sm mb-8" style="color: var(--muted-2);">
+            Nossa equipe cria experiências sob medida para cada hóspede.
         </p>
-        <a href="{{ route('contact') }}" class="btn-primary bg-white text-secondary-dark hover:bg-gray-100">
-            Entre em Contato
-        </a>
+        <a href="{{ route('contact') }}" class="btn-gold">Falar com Nossa Equipe</a>
     </div>
 </section>
+
 @endsection
