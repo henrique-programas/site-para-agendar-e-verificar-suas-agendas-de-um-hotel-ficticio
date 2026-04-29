@@ -3,33 +3,31 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-//////////////////////////////////////////////////
+// ─── Páginas Públicas ────────────────────────────────────────────────────────
 
-Route::get('/', function () {
-    return view('pages.home');
-})->name('home');
+Route::get('/', fn() => view('pages.home'))->name('home');
+Route::get('/quartos', fn() => view('pages.rooms'))->name('rooms');
+Route::get('/sobre', fn() => view('pages.about'))->name('about');
+Route::get('/contato', fn() => view('pages.contact'))->name('contact');
+Route::get('/quartos/{id}', fn($id) => view('pages.room-detail', ['id' => $id]))->name('room.detail');
 
-route::get('/quartos', function () {
-    return view('pages.rooms');
-})->name('rooms');
+// ─── Área do Cliente (autenticado) ──────────────────────────────────────────
 
-Route::get('/sobre', function () {
-    return view('pages.about');
-})->name('about');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', fn() => view('client.dashboard'))->name('dashboard');
+    Route::get('/minhasReservas', fn() => view('client.reservas'))->name('reservation.index');
+});
 
-Route::get('/contato', function () {
-    return view('pages.contact');
-})->name('contact');
+// ─── Área do Admin ───────────────────────────────────────────────────────────
 
-Route::get('/quartos/{id}', function ($id) {
-    return view('pages.room-detail', ['id' => $id]);
-})->name('room.detail');
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
+    Route::get('/quartos', fn() => view('admin.quartos.index'))->name('quartos.index');
+    Route::get('/reservas', fn() => view('admin.reservas.index'))->name('reservas.index');
+    Route::get('/usuarios', fn() => view('admin.usuarios.index'))->name('usuarios.index');
+});
 
-//////////////////////////////////////////////////
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// ─── Perfil ──────────────────────────────────────────────────────────────────
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
