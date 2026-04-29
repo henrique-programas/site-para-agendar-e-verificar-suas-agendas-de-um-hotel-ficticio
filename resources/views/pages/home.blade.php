@@ -6,13 +6,20 @@
      HERO — Tela cheia com imagem
      ===================================================== -->
 <section class="relative h-screen min-h-[700px] overflow-hidden">
-    <div class="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1571896349842-b46d0e36f0bb?w=1600&q=85"
-             alt="Calm Mind Resort" class="w-full h-full object-cover"
-             style="filter: brightness(0.5);">
-    </div>
-    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,8,6,0.55) 0%, transparent 45%, rgba(10,8,6,0.75) 80%, #0a0806 100%);"></div>
-    <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(10,8,6,0.35) 0%, transparent 55%);"></div>
+
+    <!-- Imagem de fundo -->
+    <div id="hero-bg" class="absolute inset-0" style="
+        background-image: url('https://images.unsplash.com/photo-1571896349842-b46d0e36f0bb?w=1600&q=85');
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        filter: brightness(0.52);
+    "></div>
+
+    <!-- Gradiente inferior — funde suavemente com a próxima seção -->
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,8,6,0.4) 0%, transparent 40%, rgba(10,8,6,0.7) 75%, #0a0806 100%);"></div>
+    <!-- Gradiente lateral esquerdo -->
+    <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(10,8,6,0.4) 0%, transparent 55%);"></div>
 
     <div class="relative h-full flex items-end pb-24 px-6 lg:px-20 max-w-7xl mx-auto">
         <div class="max-w-2xl">
@@ -36,6 +43,30 @@
         <span style="color: var(--cream-dim); font-size: 0.6rem; letter-spacing: 0.2em; writing-mode: vertical-rl;">SCROLL</span>
     </div>
 </section>
+
+<script>
+    // Fallback: se o Unsplash não carregar, troca para outra imagem
+    (function() {
+        const hero = document.getElementById('hero-bg');
+        if (!hero) return;
+        const urls = [
+            'https://images.unsplash.com/photo-1571896349842-b46d0e36f0bb?w=1600&q=85',
+            'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1600&q=80',
+            'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600&q=80',
+            'https://images.unsplash.com/photo-1540541338287-41700207dee6?w=1600&q=80',
+        ];
+        let idx = 0;
+        function tryNext() {
+            if (idx >= urls.length) return;
+            const img = new Image();
+            img.onload = () => { hero.style.backgroundImage = "url('" + urls[idx] + "')"; };
+            img.onerror = () => { idx++; tryNext(); };
+            img.src = urls[idx];
+            idx++;
+        }
+        tryNext();
+    })();
+</script>
 
 <!-- =====================================================
      SOBRE — Fundo CLARO (creme), ruptura visual
