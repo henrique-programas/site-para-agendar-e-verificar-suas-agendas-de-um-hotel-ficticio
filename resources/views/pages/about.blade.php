@@ -160,10 +160,11 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             @foreach([
-                ['name' => 'Carlos Mendes',    'role' => 'Diretor Geral',      'img' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80'],
-                ['name' => 'Ana Silva',        'role' => 'Gerente Operações',  'img' => 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80'],
-                ['name' => 'Roberto Costa',    'role' => 'Chef Executivo',     'img' => 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80'],
-                ['name' => 'Marina Santos',    'role' => 'Gerente de Spa',     'img' => 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80'],
+                [
+                    'name' => 'Henrique Barroso Andrade',
+                    'role' => 'Diretor Geral',
+                    'img' => 'images/266340390.png'
+                ]
             ] as $s)
             <div class="group">
                 <div class="overflow-hidden rounded-sm mb-4" style="border: 1px solid rgba(201,168,76,0.1);">
