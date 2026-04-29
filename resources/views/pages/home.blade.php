@@ -155,40 +155,99 @@
             <a href="{{ route('rooms') }}" class="btn-outline mt-8 md:mt-0 self-start md:self-auto">Ver Todos →</a>
         </div>
 
+        @if($rooms->isNotEmpty())
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            @foreach([
-                ['title'=>'Quarto Deluxe',    'price'=>'R$ 450',  'tag'=>'Clássico',    'img'=>'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80'],
-                ['title'=>'Suite Premium',    'price'=>'R$ 750',  'tag'=>'Mais Pedido', 'img'=>'https://images.unsplash.com/photo-1578683078519-94f3b6c49f15?w=600&q=80'],
-                ['title'=>'Suíte Presidencial','price'=>'R$ 1.200','tag'=>'Exclusivo',  'img'=>'https://images.unsplash.com/photo-1591088398332-8c716432dd4d?w=600&q=80'],
-            ] as $room)
+            @foreach($rooms as $room)
+            @php
+                $typeLabels = [
+                    'standard'    => 'Standard',
+                    'deluxe'      => 'Deluxe',
+                    'suite'       => 'Suíte',
+                    'presidential'=> 'Presidencial',
+                ];
+                $typeLabel = $typeLabels[$room->type] ?? ucfirst($room->type);
+                $defaultImgs = [
+                    'standard'    => 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80',
+                    'deluxe'      => 'https://images.unsplash.com/photo-1578683078519-94f3b6c49f15?w=600&q=80',
+                    'suite'       => 'https://images.unsplash.com/photo-1591088398332-8c716432dd4d?w=600&q=80',
+                    'presidential'=> 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=600&q=80',
+                ];
+                $imgUrl = $room->image_url ?: ($defaultImgs[$room->type] ?? 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80');
+            @endphp
             <div class="card-dark group overflow-hidden">
                 <div class="relative h-72 overflow-hidden">
-                    <img src="{{ $room['img'] }}" alt="{{ $room['title'] }}"
+                    <img src="{{ $imgUrl }}" alt="{{ $room->name }}"
                          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                          style="filter: brightness(0.78);">
                     <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(10,8,6,0.9) 0%, transparent 55%);"></div>
                     <div class="absolute top-4 left-4">
                         <span class="text-xs uppercase tracking-widest px-3 py-1 rounded-sm"
                               style="background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); backdrop-filter: blur(4px);">
-                            {{ $room['tag'] }}
+                            {{ $typeLabel }}
                         </span>
                     </div>
                     <div class="absolute bottom-0 left-0 right-0 p-6">
-                        <h3 class="font-display text-2xl mb-1" style="color: var(--cream); font-style: italic;">{{ $room['title'] }}</h3>
+                        <h3 class="font-display text-2xl mb-1" style="color: var(--cream); font-style: italic;">{{ $room->name }}</h3>
                         <span class="text-xs uppercase tracking-widest" style="color: var(--gold);">
-                            {{ $room['price'] }} <span style="color: var(--muted-2);">/ noite</span>
+                            R$ {{ number_format($room->price_per_night, 0, ',', '.') }}
+                            <span style="color: var(--muted-2);">/ noite</span>
                         </span>
                     </div>
                 </div>
                 <div class="p-6 flex items-center justify-between" style="border-top: 1px solid rgba(201,168,76,0.08);">
                     <div class="flex gap-4 text-xs" style="color: var(--muted-2);">
-                        <span>🛏 King</span><span>📶 WiFi</span><span>🛁 Spa</span>
+                        <span>👥 {{ $room->capacity }} hóspede{{ $room->capacity > 1 ? 's' : '' }}</span>
+                        @if($room->amenities && in_array('wifi', $room->amenities))
+                            <span>📶 WiFi</span>
+                        @endif
+                        @if($room->amenities && in_array('spa', $room->amenities))
+                            <span>🛁 Spa</span>
+                        @endif
+                    </div>
+                    <a href="{{ route('room.detail', $room) }}"
+                       class="text-xs uppercase tracking-widest"
+                       style="color: var(--gold);">Ver →</a>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @else
+        {{-- Fallback com cards estáticos enquanto não há quartos cadastrados --}}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @foreach([
+                ['title'=>'Quarto Deluxe',     'price'=>'450',  'tag'=>'Deluxe',       'cap'=>2, 'img'=>'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80'],
+                ['title'=>'Suíte Premium',      'price'=>'750',  'tag'=>'Suíte',        'cap'=>2, 'img'=>'https://images.unsplash.com/photo-1578683078519-94f3b6c49f15?w=600&q=80'],
+                ['title'=>'Suíte Presidencial', 'price'=>'1200', 'tag'=>'Presidencial', 'cap'=>4, 'img'=>'https://images.unsplash.com/photo-1591088398332-8c716432dd4d?w=600&q=80'],
+            ] as $r)
+            <div class="card-dark group overflow-hidden">
+                <div class="relative h-72 overflow-hidden">
+                    <img src="{{ $r['img'] }}" alt="{{ $r['title'] }}"
+                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                         style="filter: brightness(0.78);">
+                    <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(10,8,6,0.9) 0%, transparent 55%);"></div>
+                    <div class="absolute top-4 left-4">
+                        <span class="text-xs uppercase tracking-widest px-3 py-1 rounded-sm"
+                              style="background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); backdrop-filter: blur(4px);">
+                            {{ $r['tag'] }}
+                        </span>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 class="font-display text-2xl mb-1" style="color: var(--cream); font-style: italic;">{{ $r['title'] }}</h3>
+                        <span class="text-xs uppercase tracking-widest" style="color: var(--gold);">
+                            R$ {{ $r['price'] }} <span style="color: var(--muted-2);">/ noite</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="p-6 flex items-center justify-between" style="border-top: 1px solid rgba(201,168,76,0.08);">
+                    <div class="flex gap-4 text-xs" style="color: var(--muted-2);">
+                        <span>👥 {{ $r['cap'] }} hóspedes</span><span>📶 WiFi</span><span>🛁 Spa</span>
                     </div>
                     <a href="{{ route('rooms') }}" class="text-xs uppercase tracking-widest" style="color: var(--gold);">Ver →</a>
                 </div>
             </div>
             @endforeach
         </div>
+        @endif
     </div>
 </section>
 

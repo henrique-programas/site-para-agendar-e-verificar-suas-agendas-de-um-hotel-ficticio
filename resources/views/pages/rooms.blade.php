@@ -22,126 +22,207 @@
 </section>
 
 <!-- ===== FILTROS ===== -->
-<div style="background: var(--ink-2); border-top: 1px solid rgba(201,168,76,0.08); border-bottom: 1px solid rgba(201,168,76,0.08); position: sticky; top: 80px; z-index: 40;">
+<div id="filter-bar" style="background: var(--ink-2); border-top: 1px solid rgba(201,168,76,0.08); border-bottom: 1px solid rgba(201,168,76,0.08); position: sticky; top: 80px; z-index: 40; transition: border-color 0.3s;">
     <div class="max-w-7xl mx-auto px-6 lg:px-12 py-5">
-        <form class="flex flex-wrap items-end gap-5">
-            @foreach([
-                ['label' => 'Tipo',       'name' => 'type',     'opts' => ['Todos','Deluxe','Premium','Presidencial','Nupcial','Família','Studio']],
-                ['label' => 'Check-in',   'name' => 'checkin',  'type' => 'date'],
-                ['label' => 'Check-out',  'name' => 'checkout', 'type' => 'date'],
-            ] as $f)
-            <div>
-                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">{{ $f['label'] }}</label>
-                @if(isset($f['opts']))
-                    <select name="{{ $f['name'] }}" class="px-4 py-2 text-xs rounded-sm focus:outline-none"
-                            style="background: var(--ink-3); border: 1px solid rgba(201,168,76,0.12); color: var(--cream); min-width: 130px;">
-                        @foreach($f['opts'] as $o)<option>{{ $o }}</option>@endforeach
-                    </select>
-                @else
-                    <input type="{{ $f['type'] }}" name="{{ $f['name'] }}"
-                           class="px-4 py-2 text-xs rounded-sm focus:outline-none"
-                           style="background: var(--ink-3); border: 1px solid rgba(201,168,76,0.12); color: var(--cream);">
-                @endif
+        <form id="filter-form" method="GET" action="{{ route('rooms') }}" class="flex flex-wrap items-end gap-5">
+
+            {{-- Busca por nome --}}
+            <div class="flex-1" style="min-width: 180px; max-width: 280px;">
+                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Buscar</label>
+                <input type="text" name="search" value="{{ request('search') }}"
+                       placeholder="Nome ou número…"
+                       id="filter-search"
+                       class="w-full px-4 py-2 text-xs rounded-sm focus:outline-none"
+                       style="background: var(--ink-3); border: 1px solid rgba(201,168,76,0.12); color: var(--cream);">
             </div>
-            @endforeach
+
+            {{-- Tipo --}}
             <div>
-                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Preço</label>
-                <select name="price" class="px-4 py-2 text-xs rounded-sm focus:outline-none"
-                        style="background: var(--ink-3); border: 1px solid rgba(201,168,76,0.12); color: var(--cream);">
-                    <option>Qualquer</option>
-                    <option>Até R$ 500</option>
-                    <option>R$ 500 – R$ 1.000</option>
-                    <option>Acima R$ 1.000</option>
+                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Tipo</label>
+                <select name="type" id="filter-type"
+                        class="px-4 py-2 text-xs rounded-sm focus:outline-none"
+                        style="background: var(--ink-3); border: 1px solid rgba(201,168,76,0.12); color: var(--cream); min-width: 130px;">
+                    <option value="todos" {{ request('type','todos') === 'todos' ? 'selected' : '' }}>Todos</option>
+                    <option value="standard"     {{ request('type') === 'standard'     ? 'selected' : '' }}>Standard</option>
+                    <option value="deluxe"       {{ request('type') === 'deluxe'       ? 'selected' : '' }}>Deluxe</option>
+                    <option value="suite"        {{ request('type') === 'suite'        ? 'selected' : '' }}>Suíte</option>
+                    <option value="presidential" {{ request('type') === 'presidential' ? 'selected' : '' }}>Presidencial</option>
                 </select>
             </div>
-            <button type="submit" class="btn-gold py-2">Filtrar</button>
+
+            {{-- Preço --}}
+            <div>
+                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Preço</label>
+                <select name="price" id="filter-price"
+                        class="px-4 py-2 text-xs rounded-sm focus:outline-none"
+                        style="background: var(--ink-3); border: 1px solid rgba(201,168,76,0.12); color: var(--cream);">
+                    <option value="">Qualquer</option>
+                    <option value="ate500"    {{ request('price') === 'ate500'    ? 'selected' : '' }}>Até R$ 500</option>
+                    <option value="500a1000"  {{ request('price') === '500a1000'  ? 'selected' : '' }}>R$ 500 – R$ 1.000</option>
+                    <option value="acima1000" {{ request('price') === 'acima1000' ? 'selected' : '' }}>Acima R$ 1.000</option>
+                </select>
+            </div>
+
+            {{-- Capacidade --}}
+            <div>
+                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Hóspedes</label>
+                <select name="capacity" id="filter-capacity"
+                        class="px-4 py-2 text-xs rounded-sm focus:outline-none"
+                        style="background: var(--ink-3); border: 1px solid rgba(201,168,76,0.12); color: var(--cream);">
+                    <option value="">Qualquer</option>
+                    <option value="1" {{ request('capacity') === '1' ? 'selected' : '' }}>1 hóspede</option>
+                    <option value="2" {{ request('capacity') === '2' ? 'selected' : '' }}>2 hóspedes</option>
+                    <option value="3" {{ request('capacity') === '3' ? 'selected' : '' }}>3 hóspedes</option>
+                    <option value="4" {{ request('capacity') === '4' ? 'selected' : '' }}>4+ hóspedes</option>
+                </select>
+            </div>
+
+            {{-- Indicador de loading --}}
+            <div id="filter-loading" class="self-end pb-2 hidden">
+                <span class="text-xs uppercase tracking-widest" style="color: var(--gold); opacity: 0.7;">
+                    <span style="display:inline-block; animation: spin 1s linear infinite;">◌</span> Filtrando…
+                </span>
+            </div>
+
+            @if(request()->hasAny(['type','price','search','capacity']))
+                <a href="{{ route('rooms') }}" id="filter-clear"
+                   class="text-xs uppercase tracking-widest self-end pb-2"
+                   style="color: var(--muted);"
+                   onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">
+                    ✕ Limpar
+                </a>
+            @endif
         </form>
     </div>
 </div>
 
+<style>
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    #filter-type, #filter-price, #filter-capacity, #filter-search {
+        transition: border-color 0.2s;
+    }
+    #filter-type:focus, #filter-price:focus, #filter-capacity:focus, #filter-search:focus {
+        border-color: rgba(201,168,76,0.45) !important;
+    }
+    .filter-active {
+        border-color: rgba(201,168,76,0.45) !important;
+        color: var(--gold) !important;
+    }
+</style>
+
 <!-- ===== GRID DE QUARTOS ===== -->
 <section style="background: var(--ink);" class="py-24">
     <div class="max-w-7xl mx-auto px-6 lg:px-12">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @foreach([
-                ['title' => 'Quarto Deluxe',     'price' => 'R$ 450', 'tag' => 'Clássico',    'size' => '35m²', 'guests' => '2', 'rating' => '4.5', 'img' => 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80',     'items' => ['Cama King','Smart TV 55"','Banheiro mármore','Varanda']],
-                ['title' => 'Suite Premium',     'price' => 'R$ 750', 'tag' => 'Mais Pedido', 'size' => '65m²', 'guests' => '2', 'rating' => '4.9', 'img' => 'https://images.unsplash.com/photo-1578683078519-94f3b6c49f15?w=600&q=80',     'items' => ['Sala separada','Jacuzzi','Vista resort','Bar privativo']],
-                ['title' => 'Suíte Presidencial','price' => 'R$ 1.200','tag' => 'Exclusivo',  'size' => '150m²','guests' => '4', 'rating' => '5.0', 'img' => 'https://images.unsplash.com/photo-1591088398332-8c716432dd4d?w=600&q=80',     'items' => ['2 Quartos','Cozinha equipada','Varanda 80m²','Home theater']],
-                ['title' => 'Suite Nupcial',     'price' => 'R$ 950', 'tag' => 'Romântica',   'size' => '90m²', 'guests' => '2', 'rating' => '5.0', 'img' => 'https://images.unsplash.com/photo-1569495285382-649f3061fb6f?w=600&q=80',     'items' => ['Banhão privado','Iluminação especial','Mini adega','Flores diárias']],
-                ['title' => 'Suite Família',     'price' => 'R$ 650', 'tag' => 'Familiar',    'size' => '100m²','guests' => '4', 'rating' => '4.6', 'img' => 'https://images.unsplash.com/photo-1596928519198-83e0b5c8d900?w=600&q=80',     'items' => ['2 Quartos','Área de lazer','Kitchenette','Baby-sitting']],
-                ['title' => 'Studio Deluxe',     'price' => 'R$ 350', 'tag' => 'Econômico',   'size' => '28m²', 'guests' => '2', 'rating' => '4.4', 'img' => 'https://images.unsplash.com/photo-1512694712202-b4f91e6ca4eb?w=600&q=80',     'items' => ['Cama Queen','WiFi 1Gbps','Toiletries premium','Vista jardim']],
-            ] as $room)
-            <div class="card-dark group overflow-hidden">
-                <!-- Imagem -->
-                <div class="relative h-64 overflow-hidden">
-                    <img src="{{ $room['img'] }}" alt="{{ $room['title'] }}"
-                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                         style="filter: brightness(0.8);">
-                    <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(10,8,6,0.9) 0%, transparent 55%);"></div>
-
-                    <!-- Tag -->
-                    <div class="absolute top-4 left-4">
-                        <span class="text-xs uppercase tracking-widest px-3 py-1"
-                              style="background: rgba(10,8,6,0.7); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); backdrop-filter: blur(6px); border-radius: 2px;">
-                            {{ $room['tag'] }}
-                        </span>
-                    </div>
-
-                    <!-- Tamanho e hóspedes -->
-                    <div class="absolute top-4 right-4 flex gap-2 text-xs" style="color: var(--cream-dim);">
-                        <span style="background: rgba(10,8,6,0.6); padding: 4px 8px; backdrop-filter: blur(4px); border-radius: 2px;">{{ $room['size'] }}</span>
-                    </div>
-
-                    <!-- Rating -->
-                    <div class="absolute bottom-4 right-4 flex items-center gap-1 text-xs"
-                         style="color: var(--gold);">
-                        <span>★</span>
-                        <span style="color: var(--cream-dim);">{{ $room['rating'] }}</span>
-                    </div>
-                </div>
-
-                <!-- Conteúdo -->
-                <div class="p-6">
-                    <h3 class="font-display text-2xl mb-4" style="color: var(--cream); font-style: italic;">{{ $room['title'] }}</h3>
-
-                    <!-- Amenidades -->
-                    <div class="grid grid-cols-2 gap-y-2 mb-6">
-                        @foreach($room['items'] as $item)
-                        <div class="flex items-center gap-2 text-xs" style="color: var(--muted-2);">
-                            <span style="color: var(--gold-dim);">—</span>
-                            {{ $item }}
-                        </div>
-                        @endforeach
-                    </div>
-
-                    <!-- Preço + Botão -->
-                    <div class="flex items-center justify-between pt-5" style="border-top: 1px solid rgba(201,168,76,0.1);">
-                        <div>
-                            <span class="font-display text-2xl" style="color: var(--gold); font-style: italic;">{{ $room['price'] }}</span>
-                            <span class="text-xs ml-1" style="color: var(--muted);">/ noite</span>
-                        </div>
-                        <a href="#" class="btn-gold py-2 px-5 text-xs">Ver Detalhes</a>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-
-        <!-- Paginação -->
-        <div class="flex items-center justify-center gap-2 mt-16">
-            <button class="w-10 h-10 flex items-center justify-center text-xs rounded-sm transition-all duration-200"
-                    style="background: var(--ink-3); color: var(--muted-2); border: 1px solid rgba(201,168,76,0.1);">←</button>
-            @foreach([1,2,3] as $p)
-            <button class="w-10 h-10 flex items-center justify-center text-xs rounded-sm transition-all duration-200"
-                    style="{{ $p === 1 ? 'background: var(--gold); color: var(--ink);' : 'background: var(--ink-3); color: var(--muted-2); border: 1px solid rgba(201,168,76,0.1);' }}">
-                {{ $p }}
-            </button>
-            @endforeach
-            <button class="w-10 h-10 flex items-center justify-center text-xs rounded-sm transition-all duration-200"
-                    style="background: var(--ink-3); color: var(--muted-2); border: 1px solid rgba(201,168,76,0.1);">→</button>
+        <div id="rooms-grid">
+            @include('pages.partials.rooms-grid')
         </div>
     </div>
 </section>
+
+{{-- Script DEPOIS do #rooms-grid para que getElementById funcione --}}
+<script>
+(function () {
+    const form    = document.getElementById('filter-form');
+    const grid    = document.getElementById('rooms-grid');
+    const loading = document.getElementById('filter-loading');
+    const search  = document.getElementById('filter-search');
+    const selects = ['filter-type', 'filter-price', 'filter-capacity']
+                        .map(id => document.getElementById(id))
+                        .filter(Boolean);
+
+    if (!form || !grid || !loading) return; // segurança: todos os elementos devem existir
+
+    const baseUrl  = form.getAttribute('action');
+    const basePath = new URL(baseUrl, location.origin).pathname;
+
+    let abortCtrl = null;
+    let debounce;
+
+    /* ── Busca via AJAX ─────────────────────────────────── */
+    function fetchRooms(fetchUrl) {
+        if (abortCtrl) abortCtrl.abort();
+        abortCtrl = new AbortController();
+
+        loading.classList.remove('hidden');
+        grid.style.opacity = '0.45';
+        grid.style.transition = 'opacity .15s';
+
+        fetch(fetchUrl, {
+            signal: abortCtrl.signal,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(r => r.text())
+        .then(html => {
+            grid.innerHTML = html;
+            grid.style.opacity = '1';
+            loading.classList.add('hidden');
+            markActive();
+            bindPagination();
+        })
+        .catch(err => {
+            if (err.name !== 'AbortError') {
+                grid.style.opacity = '1';
+                loading.classList.add('hidden');
+            }
+        });
+    }
+
+    /* ── Constrói URL com os filtros atuais do form ─────── */
+    function filterUrl() {
+        const params = new URLSearchParams(new FormData(form));
+        for (const [k, v] of [...params]) { if (!v) params.delete(k); }
+        const url = baseUrl + (params.toString() ? '?' + params.toString() : '');
+        history.replaceState(null, '', url);
+        return url;
+    }
+
+    /* ── Marca visualmente filtros ativos ───────────────── */
+    function markActive() {
+        selects.forEach(sel => {
+            const on = sel.value && sel.value !== 'todos';
+            sel.classList.toggle('filter-active', on);
+        });
+    }
+
+    /* ── Paginação AJAX — só intercepta links para /quartos (não /quartos/123) ─ */
+    function bindPagination() {
+        grid.querySelectorAll('a').forEach(link => {
+            try {
+                const url = new URL(link.href, location.origin);
+                if (url.pathname !== basePath) return;
+            } catch { return; }
+
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                history.replaceState(null, '', this.href);
+                fetchRooms(this.href);
+                window.scrollTo({
+                    top: grid.getBoundingClientRect().top + window.scrollY - 120,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    }
+
+    /* ── Impede submit por Enter no campo busca ─────────── */
+    form.addEventListener('submit', e => e.preventDefault());
+
+    /* ── Eventos dos filtros ─────────────────────────────── */
+    selects.forEach(sel => sel.addEventListener('change', () => fetchRooms(filterUrl())));
+
+    if (search) {
+        search.addEventListener('input', () => {
+            clearTimeout(debounce);
+            debounce = setTimeout(() => fetchRooms(filterUrl()), 350);
+        });
+    }
+
+    /* ── Estado inicial ──────────────────────────────────── */
+    markActive();
+    bindPagination();
+})();
+</script>
 
 <!-- ===== CTA ===== -->
 <section class="py-20" style="background: var(--ink-2); border-top: 1px solid rgba(201,168,76,0.1);">

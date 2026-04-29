@@ -1,20 +1,22 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\Admin;
 use Illuminate\Support\Facades\Route;
 
 // ─── Pública ────────────────────────────────────────────────────────────────
 
-Route::get('/', fn() => view('pages.home'))->name('home');
+Route::get('/', [PagesController::class, 'home'])->name('home');
 
 // ─── Tudo abaixo exige login (cliente ou admin) ─────────────────────────────
 
 Route::middleware(['auth'])->group(function () {
     // Páginas do site (protegidas)
-    Route::get('/quartos', fn() => view('pages.rooms'))->name('rooms');
+    Route::get('/quartos', [PagesController::class, 'rooms'])->name('rooms');
+    Route::get('/quartos/{room}', [PagesController::class, 'roomDetail'])->name('room.detail');
     Route::get('/sobre', fn() => view('pages.about'))->name('about');
     Route::get('/contato', fn() => view('pages.contact'))->name('contact');
-    Route::get('/quartos/{id}', fn($id) => view('pages.room-detail', ['id' => $id]))->name('room.detail');
 
     // Área do Cliente
     Route::get('/dashboard', fn() => view('client.dashboard'))->name('dashboard');
@@ -24,10 +26,31 @@ Route::middleware(['auth'])->group(function () {
 // ─── Área do Admin ───────────────────────────────────────────────────────────
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
-    Route::get('/quartos', fn() => view('admin.quartos.index'))->name('quartos.index');
-    Route::get('/reservas', fn() => view('admin.reservas.index'))->name('reservas.index');
-    Route::get('/usuarios', fn() => view('admin.usuarios.index'))->name('usuarios.index');
+
+    // Dashboard
+    Route::get('/dashboard', [Admin\DashboardController::class, 'index'])->name('dashboard');
+
+    // Quartos — CRUD completo via resource
+    Route::resource('quartos', Admin\RoomController::class)->names([
+        'index'   => 'quartos.index',
+        'create'  => 'quartos.create',
+        'store'   => 'quartos.store',
+        'edit'    => 'quartos.edit',
+        'update'  => 'quartos.update',
+        'destroy' => 'quartos.destroy',
+    ])->parameters(['quartos' => 'quarto']);
+
+    // Reservas
+    Route::get('/reservas', [Admin\ReservationController::class, 'index'])->name('reservas.index');
+    Route::patch('/reservas/{reserva}/status', [Admin\ReservationController::class, 'updateStatus'])->name('reservas.status');
+    Route::delete('/reservas/{reserva}', [Admin\ReservationController::class, 'destroy'])->name('reservas.destroy');
+
+    // Usuários
+    Route::get('/usuarios', [Admin\UserController::class, 'index'])->name('usuarios.index');
+    Route::get('/usuarios/create', [Admin\UserController::class, 'create'])->name('usuarios.create');
+    Route::post('/usuarios', [Admin\UserController::class, 'store'])->name('usuarios.store');
+    Route::patch('/usuarios/{usuario}/role', [Admin\UserController::class, 'updateRole'])->name('usuarios.role');
+    Route::delete('/usuarios/{usuario}', [Admin\UserController::class, 'destroy'])->name('usuarios.destroy');
 });
 
 // ─── Perfil ──────────────────────────────────────────────────────────────────
