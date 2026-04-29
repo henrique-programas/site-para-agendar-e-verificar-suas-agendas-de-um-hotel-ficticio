@@ -3,17 +3,20 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-// ─── Páginas Públicas ────────────────────────────────────────────────────────
+// ─── Pública ────────────────────────────────────────────────────────────────
 
 Route::get('/', fn() => view('pages.home'))->name('home');
-Route::get('/quartos', fn() => view('pages.rooms'))->name('rooms');
-Route::get('/sobre', fn() => view('pages.about'))->name('about');
-Route::get('/contato', fn() => view('pages.contact'))->name('contact');
-Route::get('/quartos/{id}', fn($id) => view('pages.room-detail', ['id' => $id]))->name('room.detail');
 
-// ─── Área do Cliente (autenticado) ──────────────────────────────────────────
+// ─── Tudo abaixo exige login (cliente ou admin) ─────────────────────────────
 
 Route::middleware(['auth'])->group(function () {
+    // Páginas do site (protegidas)
+    Route::get('/quartos', fn() => view('pages.rooms'))->name('rooms');
+    Route::get('/sobre', fn() => view('pages.about'))->name('about');
+    Route::get('/contato', fn() => view('pages.contact'))->name('contact');
+    Route::get('/quartos/{id}', fn($id) => view('pages.room-detail', ['id' => $id]))->name('room.detail');
+
+    // Área do Cliente
     Route::get('/dashboard', fn() => view('client.dashboard'))->name('dashboard');
     Route::get('/minhasReservas', fn() => view('client.reservas'))->name('reservation.index');
 });

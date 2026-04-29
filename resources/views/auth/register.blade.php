@@ -1,7 +1,9 @@
 <x-guest-layout>
     <x-auth-shell
         title="Criar conta"
-        subtitle="Crie seu acesso para gerenciar reservas e preferências">
+        subtitle="Crie seu acesso para gerenciar reservas e preferências"
+        :back-url="route('login')"
+        back-label="Login">
 
         <form method="POST" action="{{ route('register') }}" class="space-y-5">
             @csrf

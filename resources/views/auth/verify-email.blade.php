@@ -1,7 +1,9 @@
 <x-guest-layout>
     <x-auth-shell
         title="Verifique seu email"
-        subtitle="Enviamos um link de verificação para seu email. Confirme para continuar.">
+        subtitle="Enviamos um link de verificação para seu email. Confirme para continuar."
+        :back-url="route('dashboard')"
+        back-label="Conta">
 
         @if (session('status') === 'verification-link-sent')
             <div style="background: rgba(60,160,100,0.12); border: 1px solid rgba(60,160,100,0.25); color: #5cc890; padding: 0.75rem 1rem; border-radius: 2px; margin-bottom: 1.5rem; font-size: 0.85rem;">

@@ -1,7 +1,9 @@
 <x-guest-layout>
     <x-auth-shell
         title="Esqueceu sua senha?"
-        subtitle="Informe seu email para enviarmos um link de redefinição">
+        subtitle="Informe seu email para enviarmos um link de redefinição"
+        :back-url="route('login')"
+        back-label="Login">
 
         <form method="POST" action="{{ route('password.email') }}" class="space-y-5">
             @csrf

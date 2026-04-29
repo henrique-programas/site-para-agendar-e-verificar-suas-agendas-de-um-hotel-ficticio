@@ -1,7 +1,9 @@
 <x-guest-layout>
     <x-auth-shell
         title="Redefinir senha"
-        subtitle="Crie uma nova senha para acessar sua conta">
+        subtitle="Crie uma nova senha para acessar sua conta"
+        :back-url="route('login')"
+        back-label="Login">
 
         <form method="POST" action="{{ route('password.store') }}" class="space-y-5">
             @csrf

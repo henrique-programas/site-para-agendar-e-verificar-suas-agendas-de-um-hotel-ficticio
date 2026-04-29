@@ -1,7 +1,9 @@
 <x-guest-layout>
     <x-auth-shell
         title="Confirmar senha"
-        subtitle="Por segurança, confirme sua senha para continuar">
+        subtitle="Por segurança, confirme sua senha para continuar"
+        :back-url="route('dashboard')"
+        back-label="Conta">
 
         <form method="POST" action="{{ route('password.confirm') }}" class="space-y-5">
             @csrf

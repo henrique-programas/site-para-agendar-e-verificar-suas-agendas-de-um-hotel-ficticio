@@ -1,6 +1,8 @@
 @props([
     'title' => 'Bem-vindo',
     'subtitle' => null,
+    'backUrl' => null,
+    'backLabel' => 'Voltar',
     'leftLabel' => 'Resort & Spa',
     'leftTitle' => 'CalmMind',
     'leftTagline' => 'Seu refúgio de tranquilidade e elegância.',
@@ -43,6 +45,20 @@
                 <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: #f0e8d5; font-style: italic;">
                     Calm<span style="color: #c9a84c;">Mind</span>
                 </h1>
+            </div>
+
+            {{-- Ações de navegação --}}
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:0.75rem; margin-bottom: 1.25rem;">
+                <a href="{{ $backUrl ?? route('home') }}"
+                   style="font-size:0.7rem; color:#8a7560; text-decoration:none; letter-spacing:0.08em; text-transform:uppercase;"
+                   onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='#8a7560'">
+                    ← {{ $backLabel }}
+                </a>
+                <a href="{{ route('home') }}"
+                   style="font-size:0.7rem; color:#8a7560; text-decoration:none; letter-spacing:0.08em; text-transform:uppercase;"
+                   onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='#8a7560'">
+                    Página inicial
+                </a>
             </div>
 
             <div style="margin-bottom: 2.5rem;">
