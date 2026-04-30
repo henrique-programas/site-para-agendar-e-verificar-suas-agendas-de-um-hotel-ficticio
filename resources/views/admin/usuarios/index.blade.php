@@ -136,7 +136,10 @@
 
                             {{-- Remover --}}
                             <form method="POST" action="{{ route('admin.usuarios.destroy', $u) }}"
-                                  onsubmit="return confirm('Remover o usuário {{ addslashes($u->name) }}?')">
+                                  data-swal-icon="warning"
+                                  data-swal-title="Remover usuário"
+                                  data-swal-text="Remover o usuário {{ $u->name }}?"
+                                  data-swal-confirm="Sim, remover">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn-sm btn-sm-danger">✕</button>
                             </form>

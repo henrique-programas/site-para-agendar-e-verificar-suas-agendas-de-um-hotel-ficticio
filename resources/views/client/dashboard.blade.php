@@ -170,6 +170,43 @@
             </table>
         </div>
 
+        {{-- Mensagens --}}
+        <div style="margin-top:2.5rem; margin-bottom:0.75rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
+            <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--cream);font-style:italic;">
+                Mensagens
+                @if(($unreadFromAdmin ?? 0) > 0)
+                    <span style="margin-left:0.6rem; font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold);">
+                        ({{ $unreadFromAdmin }} nova{{ $unreadFromAdmin > 1 ? 's' : '' }})
+                    </span>
+                @endif
+            </h2>
+            <a href="{{ route('chat') }}" style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold);text-decoration:none;">
+                Abrir chat →
+            </a>
+        </div>
+
+        <div style="background:var(--ink-3);border:1px solid rgba(201,168,76,0.08);border-radius:3px;overflow:hidden; padding: 1rem 1.25rem;">
+            @forelse(($latestMessages ?? collect()) as $m)
+                <div style="padding:0.75rem 0; {{ !$loop->last ? 'border-bottom:1px solid rgba(201,168,76,0.07);' : '' }}">
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem;">
+                        <div style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.12em; color: var(--muted-2);">
+                            {{ $m->sender === 'user' ? 'Você' : 'Equipe' }}
+                        </div>
+                        <div style="font-size:0.72rem; color: var(--muted-2);">
+                            {{ $m->created_at->format('d/m H:i') }}
+                        </div>
+                    </div>
+                    <div style="margin-top:0.35rem; color: var(--cream-dim); font-size:0.9rem; line-height:1.45;">
+                        {{ \Illuminate\Support\Str::limit($m->message, 140) }}
+                    </div>
+                </div>
+            @empty
+                <div style="text-align:center; color:var(--muted-2); font-size:0.9rem; font-style:italic; font-family:'Cormorant Garamond',serif; padding: 1.5rem 0;">
+                    Nenhuma mensagem ainda. <a href="{{ route('chat') }}" style="color:var(--gold);">Abrir chat →</a>
+                </div>
+            @endforelse
+        </div>
+
     </div>
 </div>
 @endsection

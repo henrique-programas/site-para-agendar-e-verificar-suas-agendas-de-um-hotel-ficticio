@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 // ─── Pública ────────────────────────────────────────────────────────────────
 
 Route::get('/', [PagesController::class, 'home'])->name('home');
+Route::post('/buscar-disponibilidade', [PagesController::class, 'homeCheckinSearch'])->name('home.checkin.search');
 
 // ─── Tudo abaixo exige login (cliente ou admin) ─────────────────────────────
 
@@ -18,6 +19,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/quartos/{room}', [PagesController::class, 'roomDetail'])->name('room.detail');
     Route::get('/sobre', fn() => view('pages.about'))->name('about');
     Route::get('/contato', fn() => view('pages.contact'))->name('contact');
+    Route::post('/contato/enviar', [PagesController::class, 'sendContact'])->name('contact.send');
 
     // Área do Cliente
     Route::get('/dashboard', [Client\DashboardController::class, 'index'])->name('dashboard');
@@ -26,6 +28,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/reservar/{room}', [Client\ReservationController::class, 'store'])->name('reservation.store');
     Route::patch('/minhasReservas/{reservation}/pagar-teste', [Client\ReservationController::class, 'fakePay'])->name('reservation.fakePay');
     Route::patch('/minhasReservas/{reservation}/cancelar', [Client\ReservationController::class, 'cancel'])->name('reservation.cancel');
+
+    // Chat
+    Route::get('/chat', [Client\ChatController::class, 'index'])->name('chat');
+    Route::post('/chat', [Client\ChatController::class, 'store'])->name('chat.store');
+    Route::get('/chat/poll', [Client\ChatController::class, 'poll'])->name('chat.poll');
 });
 
 // ─── Área do Admin ───────────────────────────────────────────────────────────
@@ -56,6 +63,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/usuarios', [Admin\UserController::class, 'store'])->name('usuarios.store');
     Route::patch('/usuarios/{usuario}/role', [Admin\UserController::class, 'updateRole'])->name('usuarios.role');
     Route::delete('/usuarios/{usuario}', [Admin\UserController::class, 'destroy'])->name('usuarios.destroy');
+
+    // Chat
+    Route::get('/chat', [Admin\ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/{user}', [Admin\ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{user}', [Admin\ChatController::class, 'store'])->name('chat.store');
+    Route::get('/chat/{user}/poll', [Admin\ChatController::class, 'poll'])->name('chat.poll');
 });
 
 // ─── Perfil ──────────────────────────────────────────────────────────────────

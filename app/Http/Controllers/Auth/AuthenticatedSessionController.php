@@ -28,6 +28,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if ($request->session()->has('home_checkin_search')) {
+            $params = (array) $request->session()->get('home_checkin_search', []);
+            $request->session()->forget('home_checkin_search');
+            return redirect()->route('rooms', $params);
+        }
+
         $redirectTo = auth()->user()->role === 'admin'
             ? route('admin.dashboard')
             : route('dashboard');

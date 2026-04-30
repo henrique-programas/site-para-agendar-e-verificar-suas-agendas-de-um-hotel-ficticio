@@ -127,6 +127,48 @@
         </div>
     </div>
 
+    {{-- Mensagens --}}
+    <div>
+        <div class="section-header">
+            <div class="section-title">
+                Mensagens
+                @if(($mensagensNaoLidas ?? 0) > 0)
+                    <span class="badge badge-yellow" style="margin-left:0.6rem;">{{ $mensagensNaoLidas }} não lida{{ $mensagensNaoLidas > 1 ? 's' : '' }}</span>
+                @endif
+            </div>
+            <a href="{{ route('admin.chat.index') }}" class="link-gold">Abrir chat →</a>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Mensagem</th>
+                        <th>Quando</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse(($ultimasMensagens ?? collect()) as $m)
+                        <tr>
+                            <td style="color:#f0e8d5;">{{ $m->user->name ?? '—' }}</td>
+                            <td style="color:#c8bba5;">
+                                <a href="{{ $m->user ? route('admin.chat.show', $m->user) : route('admin.chat.index') }}"
+                                   style="color:#c9a84c; text-decoration:none;"
+                                   onmouseover="this.style.color='#e2c47a'"
+                                   onmouseout="this.style.color='#c9a84c'">
+                                    {{ \Illuminate\Support\Str::limit($m->message, 60) }}
+                                </a>
+                            </td>
+                            <td style="color:#8a7560;">{{ $m->created_at->format('d/m H:i') }}</td>
+                        </tr>
+                    @empty
+                        <tr class="empty-row"><td colspan="3">Nenhuma mensagem ainda</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     {{-- Status dos Quartos --}}
     <div>
         <div class="section-header">

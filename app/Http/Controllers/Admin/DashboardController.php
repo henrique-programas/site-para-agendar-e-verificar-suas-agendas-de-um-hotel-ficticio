@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ChatMessage;
 use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\User;
@@ -35,6 +36,21 @@ class DashboardController extends Controller
 
         $statusQuartos = Room::latest()->limit(5)->get();
 
-        return view('admin.dashboard', compact('stats', 'reservasRecentes', 'statusQuartos'));
+        $ultimasMensagens = ChatMessage::with('user')
+            ->latest()
+            ->limit(5)
+            ->get();
+
+        $mensagensNaoLidas = ChatMessage::whereNull('read_at')
+            ->where('sender', 'user')
+            ->count();
+
+        return view('admin.dashboard', compact(
+            'stats',
+            'reservasRecentes',
+            'statusQuartos',
+            'ultimasMensagens',
+            'mensagensNaoLidas'
+        ));
     }
 }

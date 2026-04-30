@@ -35,8 +35,8 @@
 
                 <div class="space-y-8">
                     @foreach([
-                        ['icon' => '📞', 'label' => 'Telefone',    'val' => '+55 (11) 9999-9999',     'sub' => 'Segunda a domingo, 8h – 21h'],
-                        ['icon' => '✉️', 'label' => 'Email',       'val' => 'contato@calmmind.com',   'sub' => 'Respondemos em até 24h'],
+                        ['icon' => '📞', 'label' => 'Telefone',    'val' => '+55 (11) 93006-3673',     'sub' => 'Segunda a domingo, 8h – 21h'],
+                        ['icon' => '✉️', 'label' => 'Email',       'val' => 'barroso.henriqu1104@gmail.com',   'sub' => 'Respondemos em até 24h'],
                         ['icon' => '📍', 'label' => 'Endereço',    'val' => 'Av. Brasil, 1000',        'sub' => 'São Paulo — SP, Brasil'],
                     ] as $c)
                     <div class="flex gap-4">
@@ -96,7 +96,7 @@
                         Envie sua mensagem
                     </h3>
 
-                    <form action="/contato/enviar" method="POST" class="space-y-5">
+                    <form id="contact-form" action="{{ route('contact.send') }}" method="POST" class="space-y-5">
                         @csrf
 
                         <!-- Nome + Email -->
@@ -255,7 +255,7 @@
         <p class="text-sm mb-8" style="color: var(--muted-2);">Ligue agora ou use nosso chat em tempo real.</p>
         <div class="flex flex-wrap gap-4 justify-center">
             <a href="tel:+5511999999999" class="btn-gold">📞 Ligar Agora</a>
-            <button class="btn-outline">💬 Chat ao Vivo</button>
+            <a href="#contact-form" class="btn-outline">💬 Iniciar Atendimento</a>
         </div>
     </div>
 </section>

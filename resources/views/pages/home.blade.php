@@ -296,20 +296,31 @@
         <h3 class="font-display text-3xl text-center mb-10" style="color: var(--cream); font-style: italic;">
             Quando você chega?
         </h3>
-        <form class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            @foreach([['Check-in','date','checkin'],['Check-out','date','checkout']] as $f)
+        <form method="POST" action="{{ route('home.checkin.search') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            @csrf
             <div>
-                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">{{ $f[0] }}</label>
-                <input type="{{ $f[1] }}" name="{{ $f[2] }}"
+                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Check-in</label>
+                <input type="date" name="check_in" value="{{ old('check_in') }}"
                        class="w-full px-4 py-3 text-sm rounded-sm focus:outline-none"
                        style="background: rgba(28,22,16,0.8); border: 1px solid rgba(201,168,76,0.2); color: var(--cream);">
             </div>
-            @endforeach
+
+            <div>
+                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Check-out</label>
+                <input type="date" name="check_out" value="{{ old('check_out') }}"
+                       class="w-full px-4 py-3 text-sm rounded-sm focus:outline-none"
+                       style="background: rgba(28,22,16,0.8); border: 1px solid rgba(201,168,76,0.2); color: var(--cream);">
+            </div>
             <div>
                 <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Hóspedes</label>
-                <select class="w-full px-4 py-3 text-sm rounded-sm focus:outline-none"
+                <select name="guests" class="w-full px-4 py-3 text-sm rounded-sm focus:outline-none"
                         style="background: rgba(28,22,16,0.8); border: 1px solid rgba(201,168,76,0.2); color: var(--cream);">
-                    <option>1 Hóspede</option><option>2 Hóspedes</option><option>3 Hóspedes</option><option>4+</option>
+                    <option value="">Qualquer</option>
+                    @for($i=1; $i<=10; $i++)
+                        <option value="{{ $i }}" {{ old('guests') == (string)$i ? 'selected' : '' }}>
+                            {{ $i }} hóspede{{ $i > 1 ? 's' : '' }}
+                        </option>
+                    @endfor
                 </select>
             </div>
             <div class="flex items-end">

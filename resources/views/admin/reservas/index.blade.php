@@ -122,7 +122,10 @@
                 <td>
                     <div class="actions-cell">
                         <form method="POST" action="{{ route('admin.reservas.destroy', $r) }}"
-                              onsubmit="return confirm('Remover esta reserva?')">
+                              data-swal-icon="warning"
+                              data-swal-title="Remover reserva"
+                              data-swal-text="Tem certeza que deseja remover esta reserva?"
+                              data-swal-confirm="Sim, remover">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn-sm btn-sm-danger">✕</button>
                         </form>

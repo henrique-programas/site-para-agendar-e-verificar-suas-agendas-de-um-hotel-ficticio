@@ -369,6 +369,54 @@
         });
     </script>
 
+    <script>
+        // SweetAlert confirmations (tema do site)
+        (function () {
+            if (!window.Swal) return;
+
+            const theme = {
+                background: '#110e0a',
+                color: '#f0e8d5',
+                confirmButtonColor: '#c9a84c',
+                cancelButtonColor: '#5c5040',
+            };
+
+            window.calmConfirm = function ({ title, text, confirmText, icon }) {
+                return Swal.fire({
+                    ...theme,
+                    icon: icon || 'warning',
+                    title: title || 'Confirmar ação',
+                    text: text || 'Tem certeza?',
+                    showCancelButton: true,
+                    confirmButtonText: confirmText || 'Confirmar',
+                    cancelButtonText: 'Voltar',
+                    reverseButtons: true,
+                    focusCancel: true,
+                });
+            };
+
+            document.addEventListener('submit', function (e) {
+                const form = e.target;
+                if (!(form instanceof HTMLFormElement)) return;
+                if (form.dataset.swalConfirmed === '1') return;
+
+                const title = form.getAttribute('data-swal-title');
+                const text = form.getAttribute('data-swal-text');
+                const confirmText = form.getAttribute('data-swal-confirm');
+                const icon = form.getAttribute('data-swal-icon');
+                if (!title && !text && !confirmText && !icon) return;
+
+                e.preventDefault();
+                window.calmConfirm({ title, text, confirmText, icon }).then((res) => {
+                    if (res.isConfirmed) {
+                        form.dataset.swalConfirmed = '1';
+                        form.submit();
+                    }
+                });
+            }, true);
+        })();
+    </script>
+
     @vite('resources/js/app.js')
 </body>
 </html>

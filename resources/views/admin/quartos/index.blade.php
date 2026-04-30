@@ -124,7 +124,11 @@
             <div class="room-actions">
                 <a href="{{ route('admin.quartos.edit', $room) }}" class="btn-sm btn-sm-gold">Editar</a>
                 <form method="POST" action="{{ route('admin.quartos.destroy', $room) }}"
-                      onsubmit="return confirm('Remover o quarto Nº {{ $room->number }}?')" style="margin-left:auto;">
+                      data-swal-icon="warning"
+                      data-swal-title="Remover quarto"
+                      data-swal-text="Remover o quarto Nº {{ $room->number }}?"
+                      data-swal-confirm="Sim, remover"
+                      style="margin-left:auto;">
                     @csrf @method('DELETE')
                     <button type="submit" class="btn-sm btn-sm-danger">Remover</button>
                 </form>

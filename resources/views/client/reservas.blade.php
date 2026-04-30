@@ -101,7 +101,11 @@
                             <td style="padding:0.95rem 1.25rem; border-bottom:1px solid rgba(201,168,76,0.05);">
                                 <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
                                     @if($r->status === 'pendente')
-                                        <form method="POST" action="{{ route('reservation.fakePay', $r) }}">
+                                        <form method="POST" action="{{ route('reservation.fakePay', $r) }}"
+                                              data-swal-icon="question"
+                                              data-swal-title="Pagamento (teste)"
+                                              data-swal-text="Confirmar pagamento fictício desta reserva?"
+                                              data-swal-confirm="Sim, pagar">
                                             @csrf @method('PATCH')
                                             <button type="submit"
                                                     style="padding:0.45rem 0.75rem; font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; border-radius:2px; cursor:pointer; border:1px solid rgba(60,160,100,0.25); background:rgba(60,160,100,0.08); color:#5cc890;"
@@ -112,7 +116,10 @@
                                         </form>
 
                                         <form method="POST" action="{{ route('reservation.cancel', $r) }}"
-                                              onsubmit="return confirm('Cancelar esta reserva?')">
+                                              data-swal-icon="warning"
+                                              data-swal-title="Cancelar reserva"
+                                              data-swal-text="Tem certeza que deseja cancelar esta reserva?"
+                                              data-swal-confirm="Sim, cancelar">
                                             @csrf @method('PATCH')
                                             <button type="submit"
                                                     style="padding:0.45rem 0.75rem; font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; border-radius:2px; cursor:pointer; border:1px solid rgba(200,70,70,0.25); background:rgba(200,70,70,0.08); color:#e07070;"
@@ -123,7 +130,10 @@
                                         </form>
                                     @elseif($r->status === 'confirmado' && !$r->checked_in_at)
                                         <form method="POST" action="{{ route('reservation.cancel', $r) }}"
-                                              onsubmit="return confirm('Cancelar esta reserva confirmada?')">
+                                              data-swal-icon="warning"
+                                              data-swal-title="Cancelar reserva confirmada"
+                                              data-swal-text="Tem certeza que deseja cancelar esta reserva confirmada?"
+                                              data-swal-confirm="Sim, cancelar">
                                             @csrf @method('PATCH')
                                             <button type="submit"
                                                     style="padding:0.45rem 0.75rem; font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; border-radius:2px; cursor:pointer; border:1px solid rgba(200,70,70,0.25); background:rgba(200,70,70,0.08); color:#e07070;"
