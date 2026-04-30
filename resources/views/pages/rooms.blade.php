@@ -10,6 +10,13 @@
         <div class="absolute inset-0" style="background: linear-gradient(to bottom, var(--ink) 0%, transparent 30%, var(--ink) 100%);"></div>
     </div>
     <div class="relative max-w-7xl mx-auto px-6 lg:px-12">
+        @auth
+        <div style="margin-bottom:1.25rem;">
+            <a href="{{ route('dashboard') }}" class="btn-outline" style="display:inline-flex; padding:0.55rem 1rem; font-size:0.72rem;">
+                ← Voltar para Minha conta
+            </a>
+        </div>
+        @endauth
         <span class="line-gold"></span>
         <p class="text-xs uppercase tracking-[0.25em] mb-3" style="color: var(--gold);">Acomodações</p>
         <h1 class="font-display text-6xl md:text-7xl" style="color: var(--cream); font-style: italic;">

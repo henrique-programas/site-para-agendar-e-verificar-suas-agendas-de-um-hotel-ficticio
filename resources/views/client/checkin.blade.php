@@ -6,15 +6,18 @@
 <div style="min-height: 100vh; padding-top: 110px; padding-bottom: 4rem; background: var(--ink);">
     <div class="max-w-7xl mx-auto px-6 lg:px-12">
 
-        <div style="margin-bottom: 2rem;">
-            <span class="line-gold"></span>
-            <p class="text-xs uppercase tracking-[0.25em] mb-3" style="color: var(--gold);">Disponibilidade</p>
-            <h1 class="font-display text-5xl" style="color: var(--cream); font-style: italic; line-height: 1.1;">
-                Escolha as datas e encontre seu quarto
-            </h1>
-            <p class="mt-4 text-sm" style="color: var(--muted-2); max-width: 46rem;">
-                O sistema verifica automaticamente se existe alguma reserva que conflita com o período selecionado.
-            </p>
+        <div style="margin-bottom: 2rem; display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
+            <div style="flex:1; min-width:16rem;">
+                <span class="line-gold"></span>
+                <p class="text-xs uppercase tracking-[0.25em] mb-3" style="color: var(--gold);">Disponibilidade</p>
+                <h1 class="font-display text-5xl" style="color: var(--cream); font-style: italic; line-height: 1.1;">
+                    Escolha as datas e encontre seu quarto
+                </h1>
+                <p class="mt-4 text-sm" style="color: var(--muted-2); max-width: 46rem;">
+                    O sistema verifica automaticamente se existe alguma reserva que conflita com o período selecionado.
+                </p>
+            </div>
+            <a href="{{ route('dashboard') }}" class="btn-outline" style="padding:0.55rem 1rem; align-self:flex-start;">← Voltar para Minha conta</a>
         </div>
 
         {{-- Alerts via SweetAlert (layout) --}}

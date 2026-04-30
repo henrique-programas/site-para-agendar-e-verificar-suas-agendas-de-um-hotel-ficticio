@@ -62,8 +62,9 @@ class ChatController extends Controller
             ->where('user_id', auth()->id())
             ->where('sender', 'user')
             ->exists();
+        // Polling must not 403: browser fetch() without cookies hits auth as guest (403 on some hosts).
         if (!$hasUserMessage) {
-            abort(403);
+            return response()->json(['messages' => []]);
         }
 
         $afterId = (int) $request->query('after_id', 0);

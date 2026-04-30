@@ -251,6 +251,13 @@
             $flashSuccess = session('success');
             $flashError = session('error');
             $firstValidationError = $errors?->first();
+            $flashStatusSuccess = [
+                'profile-updated' => 'Dados salvos.',
+                'password-updated'=> 'Senha atualizada.',
+            ][session('status')] ?? null;
+            if ($flashStatusSuccess && ! $flashSuccess) {
+                $flashSuccess = $flashStatusSuccess;
+            }
         @endphp
 
         @if($flashSuccess || $flashError || $firstValidationError)
@@ -284,7 +291,11 @@
             </script>
         @endif
 
-        @yield('content')
+        @hasSection('content')
+            @yield('content')
+        @elseif(isset($slot))
+            {{ $slot }}
+        @endif
     </main>
 
     <!-- ===== FOOTER ===== -->

@@ -11,7 +11,10 @@
                 <h1 class="font-display text-4xl" style="color: var(--cream); font-style: italic;">Chat ao Vivo</h1>
                 <p class="mt-3 text-sm" style="color: var(--muted-2);">Fale com nossa equipe. Suas mensagens ficam salvas.</p>
             </div>
-            <a href="{{ route('contact') }}" class="btn-outline" style="padding:0.55rem 1rem;">Voltar</a>
+            <div style="display:flex; flex-wrap:wrap; gap:0.6rem; justify-content:flex-end;">
+                <a href="{{ route('dashboard') }}" class="btn-outline" style="padding:0.55rem 1rem;">← Voltar para Minha conta</a>
+                <a href="{{ route('contact') }}" class="btn-outline" style="padding:0.55rem 1rem;">Contato</a>
+            </div>
         </div>
 
         <div class="card-dark" style="padding: 1rem; border-radius: 4px;">
@@ -67,7 +70,10 @@
 
         async function poll() {
             try {
-                const r = await fetch(pollUrl + '?after_id=' + afterId, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                const r = await fetch(pollUrl + '?after_id=' + afterId, {
+                    credentials: 'same-origin',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+                });
                 if (!r.ok) return;
                 const data = await r.json();
                 if (!data.messages || data.messages.length === 0) return;

@@ -18,9 +18,14 @@
                 </p>
             </div>
 
-            <a href="{{ route('checkin') }}" class="btn-gold" style="padding:0.85rem 1.6rem;">
-                Nova reserva
-            </a>
+            <div style="display:flex; flex-wrap:wrap; gap:0.65rem; align-items:center;">
+                <a href="{{ route('dashboard') }}" class="btn-outline" style="padding:0.75rem 1.25rem;">
+                    ← Voltar para Minha conta
+                </a>
+                <a href="{{ route('checkin') }}" class="btn-gold" style="padding:0.85rem 1.6rem;">
+                    Nova reserva
+                </a>
+            </div>
         </div>
 
         @php

@@ -79,7 +79,10 @@
 
         async function poll() {
             try {
-                const r = await fetch(pollUrl + '?after_id=' + afterId, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                const r = await fetch(pollUrl + '?after_id=' + afterId, {
+                    credentials: 'same-origin',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+                });
                 if (!r.ok) return;
                 const data = await r.json();
                 if (!data.messages || data.messages.length === 0) return;
