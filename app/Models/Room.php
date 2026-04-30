@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Builder;
 
 class Room extends Model
 {
@@ -35,6 +36,16 @@ class Room extends Model
     }
 
     // ─── Helpers ──────────────────────────────────────────────────
+
+    public function scopeAvailableBetween(Builder $query, string $checkIn, string $checkOut): Builder
+    {
+        return $query->where('status', 'disponivel')
+            ->whereDoesntHave('reservations', function ($q) use ($checkIn, $checkOut) {
+                $q->where('status', '!=', 'cancelado')
+                  ->whereDate('check_in', '<', $checkOut)
+                  ->whereDate('check_out', '>', $checkIn);
+            });
+    }
 
     public function isAvailable(): bool
     {

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\Client;
 use Illuminate\Support\Facades\Route;
 
 // ─── Pública ────────────────────────────────────────────────────────────────
@@ -19,8 +20,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/contato', fn() => view('pages.contact'))->name('contact');
 
     // Área do Cliente
-    Route::get('/dashboard', fn() => view('client.dashboard'))->name('dashboard');
-    Route::get('/minhasReservas', fn() => view('client.reservas'))->name('reservation.index');
+    Route::get('/dashboard', [Client\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/minhasReservas', [Client\ReservationController::class, 'index'])->name('reservation.index');
+    Route::get('/checkin', [Client\ReservationController::class, 'checkin'])->name('checkin');
+    Route::post('/reservar/{room}', [Client\ReservationController::class, 'store'])->name('reservation.store');
+    Route::patch('/minhasReservas/{reservation}/pagar-teste', [Client\ReservationController::class, 'fakePay'])->name('reservation.fakePay');
+    Route::patch('/minhasReservas/{reservation}/cancelar', [Client\ReservationController::class, 'cancel'])->name('reservation.cancel');
 });
 
 // ─── Área do Admin ───────────────────────────────────────────────────────────

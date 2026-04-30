@@ -124,25 +124,36 @@
 
                     @if($room->status === 'disponivel')
                         <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <div>
-                                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Check-in</label>
-                                <input type="date" style="width:100%; padding:0.7rem 0.9rem; background:var(--ink-3); border:1px solid rgba(201,168,76,0.12); color:var(--cream); border-radius:2px; font-size:0.85rem; outline:none;">
-                            </div>
-                            <div>
-                                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Check-out</label>
-                                <input type="date" style="width:100%; padding:0.7rem 0.9rem; background:var(--ink-3); border:1px solid rgba(201,168,76,0.12); color:var(--cream); border-radius:2px; font-size:0.85rem; outline:none;">
-                            </div>
-                            <div>
-                                <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Hóspedes</label>
-                                <select style="width:100%; padding:0.7rem 0.9rem; background:var(--ink-3); border:1px solid rgba(201,168,76,0.12); color:var(--cream); border-radius:2px; font-size:0.85rem; outline:none;">
-                                    @for($i = 1; $i <= $room->capacity; $i++)
-                                        <option>{{ $i }} hóspede{{ $i > 1 ? 's' : '' }}</option>
-                                    @endfor
-                                </select>
-                            </div>
-                            <button class="btn-gold w-full justify-center mt-2" style="width:100%;">
-                                Reservar Agora
-                            </button>
+                            <form method="GET" action="{{ route('checkin') }}" style="display:flex; flex-direction:column; gap:0.75rem;">
+                                @php
+                                    $ci = request('check_in');
+                                    $co = request('check_out');
+                                    $ciValue = (is_string($ci) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $ci)) ? $ci : '';
+                                    $coValue = (is_string($co) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $co)) ? $co : '';
+                                @endphp
+                                <div>
+                                    <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Check-in</label>
+                                    <input type="date" name="check_in" value="{{ $ciValue }}"
+                                           style="width:100%; padding:0.7rem 0.9rem; background:var(--ink-3); border:1px solid rgba(201,168,76,0.12); color:var(--cream); border-radius:2px; font-size:0.85rem; outline:none;">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Check-out</label>
+                                    <input type="date" name="check_out" value="{{ $coValue }}"
+                                           style="width:100%; padding:0.7rem 0.9rem; background:var(--ink-3); border:1px solid rgba(201,168,76,0.12); color:var(--cream); border-radius:2px; font-size:0.85rem; outline:none;">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase tracking-widest mb-2" style="color: var(--muted-2);">Hóspedes</label>
+                                    <select name="guests"
+                                            style="width:100%; padding:0.7rem 0.9rem; background:var(--ink-3); border:1px solid rgba(201,168,76,0.12); color:var(--cream); border-radius:2px; font-size:0.85rem; outline:none;">
+                                        @for($i = 1; $i <= $room->capacity; $i++)
+                                            <option value="{{ $i }}">{{ $i }} hóspede{{ $i > 1 ? 's' : '' }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <button class="btn-gold w-full justify-center mt-2" style="width:100%;" type="submit">
+                                    Ver disponibilidade
+                                </button>
+                            </form>
                         </div>
                         <p class="text-xs text-center mt-4" style="color: var(--muted-2);">
                             Ou fale conosco pelo <a href="{{ route('contact') }}" style="color: var(--gold);">chat</a>

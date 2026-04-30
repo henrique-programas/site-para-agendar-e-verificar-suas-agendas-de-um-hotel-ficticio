@@ -24,6 +24,8 @@ class Reservation extends Model
         'admin_notes',
         'confirmed_at',
         'cancelled_at',
+        'checked_in_at',
+        'checked_out_at',
     ];
 
     protected $casts = [
@@ -31,6 +33,8 @@ class Reservation extends Model
         'check_out'      => 'date',
         'confirmed_at'   => 'datetime',
         'cancelled_at'   => 'datetime',
+        'checked_in_at'  => 'datetime',
+        'checked_out_at' => 'datetime',
         'price_per_night' => 'decimal:2',
         'total_price'    => 'decimal:2',
     ];

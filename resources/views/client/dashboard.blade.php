@@ -20,11 +20,7 @@
             </p>
         </div>
 
-        @if(session('error'))
-            <div style="background:rgba(200,70,70,0.1); border:1px solid rgba(200,70,70,0.3); color:#e07070; padding:0.75rem 1rem; border-radius:2px; font-size:0.85rem; margin-bottom:1.5rem;">
-                {{ session('error') }}
-            </div>
-        @endif
+        {{-- Alerts via SweetAlert (layout) --}}
 
         {{-- Banner de acesso admin --}}
         @if(auth()->user()->role === 'admin')
@@ -108,7 +104,7 @@
 
         </div>
 
-        {{-- Últimas reservas (placeholder) --}}
+        {{-- Últimas reservas --}}
         <div style="margin-bottom:0.75rem;display:flex;align-items:center;justify-content:space-between;">
             <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--cream);font-style:italic;">
                 Últimas Reservas
@@ -130,11 +126,46 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td colspan="5" style="padding:3rem 1.25rem; text-align:center; color:var(--muted-2); font-size:0.85rem; font-style:italic; font-family:'Cormorant Garamond',serif;">
-                            Nenhuma reserva encontrada. <a href="{{ route('rooms') }}" style="color:var(--gold);">Reserve seu quarto →</a>
-                        </td>
-                    </tr>
+                    @forelse(($latestReservations ?? collect()) as $r)
+                        @php
+                            $label = match ($r->status) {
+                                'pendente'   => 'Pendente',
+                                'confirmado' => 'Pago/Confirmado',
+                                'andamento'  => 'Em andamento',
+                                'concluido'  => 'Finalizado',
+                                'cancelado'  => 'Cancelado',
+                                default      => $r->status,
+                            };
+                        @endphp
+                        <tr>
+                            <td style="padding:0.95rem 1.25rem; border-bottom:1px solid rgba(201,168,76,0.05);">
+                                <div style="color:var(--cream); font-weight:500;">
+                                    {{ $r->room->name ?? '—' }}
+                                </div>
+                                <div style="font-size:0.78rem; color:var(--muted-2);">
+                                    Nº {{ $r->room->number ?? '—' }} · {{ $r->room ? ucfirst($r->room->type) : '—' }}
+                                </div>
+                            </td>
+                            <td style="padding:0.95rem 1.25rem; border-bottom:1px solid rgba(201,168,76,0.05); color:var(--cream-dim);">
+                                {{ optional($r->check_in)->format('d/m/Y') }}
+                            </td>
+                            <td style="padding:0.95rem 1.25rem; border-bottom:1px solid rgba(201,168,76,0.05); color:var(--cream-dim);">
+                                {{ optional($r->check_out)->format('d/m/Y') }}
+                            </td>
+                            <td style="padding:0.95rem 1.25rem; border-bottom:1px solid rgba(201,168,76,0.05); color:var(--gold); font-weight:500;">
+                                {{ $r->formatted_total }}
+                            </td>
+                            <td style="padding:0.95rem 1.25rem; border-bottom:1px solid rgba(201,168,76,0.05); color:var(--muted-2); text-transform:uppercase; letter-spacing:0.12em; font-size:0.65rem;">
+                                {{ $label }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" style="padding:3rem 1.25rem; text-align:center; color:var(--muted-2); font-size:0.85rem; font-style:italic; font-family:'Cormorant Garamond',serif;">
+                                Nenhuma reserva encontrada. <a href="{{ route('checkin') }}" style="color:var(--gold);">Reserve seu quarto →</a>
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

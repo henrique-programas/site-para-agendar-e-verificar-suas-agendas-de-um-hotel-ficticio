@@ -6,6 +6,7 @@
     <title>Admin — {{ config('app.name') }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
             --ink:      #0a0806;
@@ -322,11 +323,39 @@
     </header>
 
     <main class="main-content">
-        @if(session('error'))
-            <div class="flash-error">{{ session('error') }}</div>
-        @endif
-        @if(session('success'))
-            <div class="flash-success">{{ session('success') }}</div>
+        @php
+            $flashSuccess = session('success');
+            $flashError = session('error');
+        @endphp
+
+        @if($flashSuccess || $flashError)
+            <script>
+                (function () {
+                    if (!window.Swal) return;
+
+                    const theme = {
+                        background: '#110e0a',
+                        color: '#f0e8d5',
+                        confirmButtonColor: '#c9a84c',
+                    };
+
+                    const success = @json($flashSuccess);
+                    const error = @json($flashError);
+
+                    const msg = success || error;
+                    const icon = success ? 'success' : 'error';
+                    const title = success ? 'Sucesso' : 'Atenção';
+
+                    Swal.fire({
+                        ...theme,
+                        icon,
+                        title,
+                        text: msg,
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK',
+                    });
+                })();
+            </script>
         @endif
 
         @yield('content')

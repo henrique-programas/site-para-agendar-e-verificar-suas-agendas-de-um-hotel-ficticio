@@ -11,6 +11,8 @@
 
     @vite('resources/css/app.css')
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         :root {
             --ink:        #0a0806;
@@ -245,6 +247,43 @@
 
     <!-- ===== CONTEÚDO ===== -->
     <main>
+        @php
+            $flashSuccess = session('success');
+            $flashError = session('error');
+            $firstValidationError = $errors?->first();
+        @endphp
+
+        @if($flashSuccess || $flashError || $firstValidationError)
+            <script>
+                (function () {
+                    if (!window.Swal) return;
+
+                    const theme = {
+                        background: '#110e0a',
+                        color: '#f0e8d5',
+                        confirmButtonColor: '#c9a84c',
+                    };
+
+                    const success = @json($flashSuccess);
+                    const error = @json($flashError);
+                    const validation = @json($firstValidationError);
+
+                    const msg = success || error || validation;
+                    const icon = success ? 'success' : 'error';
+                    const title = success ? 'Sucesso' : 'Atenção';
+
+                    Swal.fire({
+                        ...theme,
+                        icon,
+                        title,
+                        text: msg,
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK',
+                    });
+                })();
+            </script>
+        @endif
+
         @yield('content')
     </main>
 
